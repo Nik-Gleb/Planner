@@ -2,8 +2,18 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
-			   minWidth="955" minHeight="600">
+			   minWidth="640" minHeight="480" pageTitle="Planner">
 	<fx:Declarations>
 		<!-- Разместить невизуальные элементы (например, службы или объекты значений) -->
 	</fx:Declarations>
+	<s:controlBarContent>
+		<s:HGroup id="titlePanel" x="6" width="664" height="41" horizontalAlign="center"
+				  verticalAlign="middle">
+			<s:Image smooth="true" smoothingQuality="default" source="../../../assets/Planner.png"/>
+			<s:Label fontSize="28" text="Planner"/>
+			<s:Spacer width="358" height="18"/>
+			<s:Button id="backButton" y="3" height="35" label="Назад"/>
+			<s:Button id="forwardButton" y="3" height="35" label="Вперёд"/>
+		</s:HGroup>
+	</s:controlBarContent>
 </s:Application>
