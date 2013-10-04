@@ -55,7 +55,7 @@ package com.simProject.planner
 		 */ 
 		public static function onForwardButtonClick():void
 		{
-			/*
+			
 			switch(currentScreen)
 			{
 				case PlannerScreen.SHELF_SIZES:
@@ -66,9 +66,11 @@ package com.simProject.planner
 					
 				default:
 				{
+					throw new Error("Рыба схавала вертолёт.");
 					break;
 				}
-			}*/
+			}
+			
 			trace("PlannerAPI.onForwardButtonClick()");
 			
 		}
