@@ -16,6 +16,7 @@ package com.simProject.planner
 	import mx.core.FlexGlobals;
 	
 	import spark.components.Button;
+	import spark.components.Panel;
 
 	/**
 	 * Главный класс приложения.
@@ -30,7 +31,7 @@ package com.simProject.planner
 		include "Version.as";
 		
 		/** Текущий экран приложения. */
-		private static var currentScreen:String = PlannerScreen.SPLASH;
+		private static var currentScreen:String = PlannerScreen.SHELF_SIZES;
 		
 		/**
 		 * Конструктор.
@@ -60,7 +61,42 @@ package com.simProject.planner
 			{
 				case PlannerScreen.SHELF_SIZES:
 				{
+					onShelfSizesComplete();
+					break;
+				}
+				
+				case PlannerScreen.CONSTRUCTOR:
+				{
+					onConstructorComplete();
+					break;
+				}
+				
+				default:
+				{
+					throw new Error("Рыба схавала вертолёт.");
+					break;
+				}
+			}
+			
+		}
+		
+		/**
+		 * Метод вызывается при клике по кнопке "BackButton".
+		 */ 
+		public static function onBackButtonClick():void
+		{
+			switch(currentScreen)
+			{
 					
+				case PlannerScreen.CONSTRUCTOR:
+				{
+					onConstructorCancel();
+					break;
+				}
+					
+				case PlannerScreen.REPORT:
+				{
+					onReportCancel();					
 					break;
 				}
 					
@@ -70,21 +106,116 @@ package com.simProject.planner
 					break;
 				}
 			}
+
+		}
+
+		/**
+		 * Вызывается, когда размер полки установлен.
+		 */
+		private static function onShelfSizesComplete():void
+		{
+			currentScreen = PlannerScreen.CONSTRUCTOR;
 			
-			trace("PlannerAPI.onForwardButtonClick()");
+			var button:Button = Button(FlexGlobals.topLevelApplication["backButton"]);
+			if(button != null){
+				button.enabled = true;
+			}else{
+				throw new Error("Рыба схавала вертолёт.");
+			}
 			
+			var shelf_sizes_panel:Panel = Panel(FlexGlobals.topLevelApplication["shelf_sizes_panel"]);
+			var constructor_panel:Panel = Panel(FlexGlobals.topLevelApplication["constructor_panel"]);
+			if(shelf_sizes_panel != null && constructor_panel != null){
+				shelf_sizes_panel.visible = false;
+				constructor_panel.visible = true;
+			}else{
+				throw new Error("Рыба схавала вертолёт.");
+			}
+
+			trace(currentScreen);
 		}
 		
 		/**
-		 * Метод вызывается при клике по кнопке "BackButton".
-		 */ 
-		public static function onBackButtonClick():void
+		 * Вызывается, когда стенка собрана.
+		 */
+		private static function onConstructorComplete():void
 		{
-			trace("PlannerAPI.onBackButtonClick()");
+			currentScreen = PlannerScreen.REPORT;
+
+			var button:Button = Button(FlexGlobals.topLevelApplication["forwardButton"]);
+			if(button != null){
+				button.enabled = false;
+			}else{
+				throw new Error("Рыба схавала вертолёт.");
+			}
+			
+			var constructor_panel:Panel = Panel(FlexGlobals.topLevelApplication["constructor_panel"]);
+			var report_panel:Panel = Panel(FlexGlobals.topLevelApplication["report_panel"]);
+			if(constructor_panel != null && report_panel != null){
+				constructor_panel.visible = false;
+				report_panel.visible = true;
+			}else{
+				throw new Error("Рыба схавала вертолёт.");
+			}
+
+			trace(currentScreen);
+		}
+		
+		/**
+		 * Вызывается, когда пользователь вернулся назад из конструктора.
+		 */
+		private static function onConstructorCancel():void
+		{
+			currentScreen = PlannerScreen.SHELF_SIZES;
+			
+			var button:Button = Button(FlexGlobals.topLevelApplication["backButton"]);
+			if(button != null){
+				button.enabled = false;
+			}else{
+				throw new Error("Рыба схавала вертолёт.");
+			}
+			
+			var constructor_panel:Panel = Panel(FlexGlobals.topLevelApplication["constructor_panel"]);
+			var shelf_sizes_panel:Panel = Panel(FlexGlobals.topLevelApplication["shelf_sizes_panel"]);
+			if(constructor_panel != null && shelf_sizes_panel != null){
+				constructor_panel.visible = false;
+				shelf_sizes_panel.visible = true;
+			}else{
+				throw new Error("Рыба схавала вертолёт.");
+			}
+
+			
+			trace(currentScreen);
+			
+		}
+
+		/**
+		 * Вызывается, когда пользователь вернулся назад из отчета.
+		 */
+		private static function onReportCancel():void
+		{
+			currentScreen = PlannerScreen.CONSTRUCTOR;
 			
 			var button:Button = Button(FlexGlobals.topLevelApplication["forwardButton"]);
-			trace(button.enabled);
+			if(button != null){
+				button.enabled = true;
+			}else{
+				throw new Error("Рыба схавала вертолёт.");
+			}
+			
+			var report_panel:Panel = Panel(FlexGlobals.topLevelApplication["report_panel"]);
+			var constructor_panel:Panel = Panel(FlexGlobals.topLevelApplication["constructor_panel"]);
+			
+			if(report_panel != null && constructor_panel != null){
+				report_panel.visible = false;
+				constructor_panel.visible = true;
+			}else{
+				throw new Error("Рыба схавала вертолёт.");
+			}
+			
+			trace(currentScreen);
 		}
+
 
 	}
 }

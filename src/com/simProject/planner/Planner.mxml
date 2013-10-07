@@ -14,12 +14,20 @@
 		<s:HGroup id="titlePanel"
 				  width="163" height="25"
 				  horizontalAlign="center" verticalAlign="middle">
-			<s:Button id="backButton"
-					  label="Назад"
-					  click="PlannerAPI.onBackButtonClick()"/>
+			<s:Button id="backButton" label="Назад"
+					  click="PlannerAPI.onBackButtonClick()" enabled="false"/>
 			<s:Button id="forwardButton"
 					  label="Вперёд"
 					  click="PlannerAPI.onForwardButtonClick()"/>
 		</s:HGroup>
 	</s:controlBarContent>
+	<s:Panel id="shelf_sizes_panel" width="620" height="419" horizontalCenter="0"
+			 title="Настройка размера полки" verticalCenter="0">
+	</s:Panel>
+	<s:Panel id="constructor_panel" visible="false" width="620" height="419"
+			 horizontalCenter="0" title="Конструктор стенки" verticalCenter="0">
+	</s:Panel>
+	<s:Panel id="report_panel" visible="false" width="620" height="419"
+			 horizontalCenter="0" title="Отчёт" verticalCenter="0">
+	</s:Panel>
 </s:Application>

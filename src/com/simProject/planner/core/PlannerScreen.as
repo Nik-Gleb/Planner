@@ -29,6 +29,6 @@ package com.simProject.planner.core
 		public static const CONSTRUCTOR:String = "constructor";
 		
 		/** Отчет. */
-		public static const REPORT:String = "constructor";		
+		public static const REPORT:String = "report";		
 	}
 }
