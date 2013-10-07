@@ -28,11 +28,24 @@
 					  click="PlannerAPI.onForwardButtonClick()"/>
 		</s:HGroup>
 	</s:controlBarContent>
-	<s:Panel id="shelf_sizes_panel" width="620" height="419" horizontalCenter="0"
+	<s:Panel id="shelf_sizes_panel" visible="false" width="620" height="419" horizontalCenter="0"
 			 title="Настройка размера полки" verticalCenter="0">
 	</s:Panel>
-	<s:Panel id="constructor_panel" visible="false" width="620" height="419"
+	<s:Panel id="constructor_panel" visible="true" width="620" height="419"
 			 horizontalCenter="0" title="Конструктор стенки" verticalCenter="0">
+		<s:List id="productsList" x="10" y="10" width="156" height="110"
+				change="{PlannerAPI.onProductsListChanged()}" dragEnabled="true"
+				dragMoveEnabled="true"
+				itemRenderer="com.simProject.planner.core.productListItemRenderer"
+				labelField="id" verticalScrollPolicy="auto">
+		</s:List>
+		<s:List id="templatesList" x="10" y="130" width="157" height="110"
+				change="{PlannerAPI.onTemplatesListChanged()}"
+				dragEnabled="true" labelField="id" verticalScrollPolicy="auto">
+		</s:List>
+		<s:RichText id="productInfo" x="174" y="10" width="267" height="110"/>
+		<s:RichText id="templateInfo" x="174" y="128" width="267" height="112"/>
+		<s:List id="resultList" x="449" y="10" width="159" height="230" dropEnabled="true" labelField="id"></s:List>
 	</s:Panel>
 	<s:Panel id="report_panel" visible="false" width="620" height="419"
 			 horizontalCenter="0" title="Отчёт" verticalCenter="0">

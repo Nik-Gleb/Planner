@@ -110,6 +110,46 @@ package com.simProject.planner
 		}
 		
 		/**
+		 * Метод вызывается при выборе пункта в списке продуктов.
+		 */ 
+		public static function onProductsListChanged():void
+		{
+			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			
+			var product:Product = Product(planner.productsList.selectedItem);
+			if(product == null)return;
+			planner.productInfo.text = "PRODUCT ID:	" + product.id + "\n" +
+				"NAME:	" + product.name + "\n" +
+				"PRICE:	" + product.price + " RUB.\n"
+			
+			
+		}
+		
+		/**
+		 * Метод вызывается при выборе пункта в списке шаблонов.
+		 */ 
+		public static function onTemplatesListChanged():void
+		{
+			
+			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			
+			var template:Template = Template(planner.templatesList.selectedItem);
+			
+			var products_str:String = "";
+			
+			for (var i:int = 0; i < template.product_id.length; i++) 
+			{
+				var product:Product = products[uint(Product_id(template.product_id[i]).id)];
+				products_str = products_str + i + ").   " + product.name + "(id=" + product.id + ") - " + product.price + " rub." + "\n";	
+			}
+			
+			planner.templateInfo.text = "TEMPLATE ID:	" + template.id + "\n" +
+				products_str;
+			
+		}
+
+		
+		/**
 		 * Метод вызывается при клике по кнопке "BackButton".
 		 */ 
 		public static function onBackButtonClick():void
@@ -171,6 +211,8 @@ package com.simProject.planner
 		private static function onProductsLoaded(data:Object):void
 		{
 			products = Vector.<Product>(data);
+			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			planner.productsList.dataProvider = productsCallResponder.lastResult;
 		}
 		
 		/**
@@ -189,6 +231,9 @@ package com.simProject.planner
 		private static function onTemplatesLoaded(data:Object):void
 		{
 			templates = Vector.<Template>(data);
+			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			planner.templatesList.dataProvider = templatesCallResponder.lastResult;
+
 			//trace(templates);
 			trace(products[uint(Product_id(templates[0].product_id[2]).id)].name);
 		}
