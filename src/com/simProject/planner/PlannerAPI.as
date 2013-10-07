@@ -27,6 +27,8 @@ package com.simProject.planner
 	
 	import valueObjects.Detail;
 	import valueObjects.Product;
+	import valueObjects.Product_id;
+	import valueObjects.Template;
 
 	/**
 	 * Главный класс приложения.
@@ -44,11 +46,17 @@ package com.simProject.planner
 		private static var productsCallResponder:CallResponder = new CallResponder();
 		/** Источник данных деталей.*/
 		private static var detailsCallResponder:CallResponder = new CallResponder();
+		/** Источник данных шаблонов.*/
+		private static var templatesCallResponder:CallResponder = new CallResponder();
+
 		
 		/** Массив продуктов. */
 		private static var products:Vector.<Product> = null;
 		/** Массив деталей. */
 		private static var details:Vector.<Detail> = null;
+		/** Массив шаблонов. */
+		private static var templates:Vector.<Template> = null;
+
 		
 		/** Текущий экран приложения. */
 		private static var currentScreen:String = PlannerScreen.SHELF_SIZES;
@@ -137,6 +145,7 @@ package com.simProject.planner
 		{
 			products = null;
 			details = null;
+			templates = null;
 			
 			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
 			
@@ -146,8 +155,12 @@ package com.simProject.planner
 			planner.dets.addEventListener(ResultEvent.RESULT,
 				function(event:ResultEvent):void{onDetailsLoaded(event.result)});
 			
+			planner.templatesService.addEventListener(ResultEvent.RESULT,
+				function(event:ResultEvent):void{onTemplatesLoaded(event.result)});
+
 			productsCallResponder.token = planner.products.getData();
 			detailsCallResponder.token = planner.dets.getData();
+			templatesCallResponder.token = planner.templatesService.getData();
 			
 		}
 		
@@ -166,10 +179,19 @@ package com.simProject.planner
 		 */ 
 		private static function onDetailsLoaded(data:Object):void
 		{
-			details = Vector.<Product>(data);
+			details = Vector.<Detail>(data);
 		}
 
-		
+		/**
+		 * Вызывается, когда данные о шаблонах получены.
+		 * @param data список шаблонов.
+		 */ 
+		private static function onTemplatesLoaded(data:Object):void
+		{
+			templates = Vector.<Template>(data);
+			//trace(templates);
+			trace(products[uint(Product_id(templates[0].product_id[2]).id)].name);
+		}
 		
 		/**
 		 * Вызывается, когда размер полки установлен.

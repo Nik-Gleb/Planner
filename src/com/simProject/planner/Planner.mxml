@@ -4,14 +4,19 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:products="services.products.*"
 			   xmlns:dets="services.dets.*"
+			   xmlns:templates="services.templates.*"
 			   minWidth="640" minHeight="480"
 			   applicationComplete="{PlannerAPI.initialize()}"
 			   pageTitle="Planner" viewSourceURL="srcview/index.html">
+	<fx:Script>
+	</fx:Script>
 	<fx:Declarations>
 		<products:Products id="products"
 						   showBusyCursor="true"/>		
 		<dets:Dets id="dets"
 				   showBusyCursor="true"/>
+		<templates:TemplatesService id="templatesService"
+									showBusyCursor="true"/>
 	</fx:Declarations>
 	<s:controlBarContent>
 		<s:HGroup id="titlePanel" width="163" height="25"
