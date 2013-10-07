@@ -2,9 +2,34 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
-			   minWidth="640" minHeight="480" pageTitle="Planner"
-			   viewSourceURL="srcview/index.html">
+			   xmlns:products="services.products.*"
+			   minWidth="640" minHeight="480"
+			   creationComplete="application_creationCompleteHandler(event)"
+			   pageTitle="Planner" viewSourceURL="srcview/index.html">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			protected function list_creationCompleteHandler(event:FlexEvent):void
+			{
+				getDataResult.token = products.getData();
+			}
+			
+			
+			protected function application_creationCompleteHandler(event:FlexEvent):void
+			{
+				getDataResult2.token = products.getData();
+			}
+			
+		]]>
+	</fx:Script>
 	<fx:Declarations>
+		<s:CallResponder id="getDataResult"/>
+		<products:Products id="products"
+						   fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+						   showBusyCursor="true"/>
+		<s:CallResponder id="getDataResult2"/>
 		<!-- Разместить невизуальные элементы (например, службы или объекты значений) -->
 	</fx:Declarations>
 	<s:controlBarContent>
