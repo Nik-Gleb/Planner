@@ -4,14 +4,12 @@
  */
 package valueObjects
 {
-import Planner.Product;
 import com.adobe.fiber.styles.IStyle;
 import com.adobe.fiber.styles.Style;
 import com.adobe.fiber.styles.StyleValidator;
 import com.adobe.fiber.valueobjects.AbstractEntityMetadata;
 import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 import com.adobe.fiber.valueobjects.IPropertyIterator;
-import mx.collections.ArrayCollection;
 import mx.events.ValidationResultEvent;
 import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.valueobjects.IModelType;
@@ -20,66 +18,89 @@ import mx.events.PropertyChangeEvent;
 use namespace model_internal;
 
 [ExcludeClass]
-internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects.AbstractEntityMetadata
+internal class _ProductEntityMetadata extends com.adobe.fiber.valueobjects.AbstractEntityMetadata
 {
     private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("products", "product");
+    model_internal static var allProperties:Array = new Array("id", "name", "price", "product");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("products", "product");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("products", "product");
+    model_internal static var allRequiredProperties:Array = new Array("id", "name", "price", "product");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("id", "name", "price", "product");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("products", "product");
+    model_internal static var dataProperties:Array = new Array("id", "name", "price", "product");
     model_internal static var sourceProperties:Array = emptyArray
-    model_internal static var nonDerivedProperties:Array = new Array("products", "product");
+    model_internal static var nonDerivedProperties:Array = new Array("id", "name", "price", "product");
     model_internal static var derivedProperties:Array = new Array();
-    model_internal static var collectionProperties:Array = new Array("product");
+    model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;
-    model_internal static var entityName:String = "Products_type";
+    model_internal static var entityName:String = "Product";
     model_internal static var dependentsOnMap:Object;
     model_internal static var dependedOnServices:Array = new Array();
     model_internal static var propertyTypeMap:Object;
 
     
-    model_internal var _productsIsValid:Boolean;
-    model_internal var _productsValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _productsIsValidCacheInitialized:Boolean = false;
-    model_internal var _productsValidationFailureMessages:Array;
+    model_internal var _idIsValid:Boolean;
+    model_internal var _idValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _idIsValidCacheInitialized:Boolean = false;
+    model_internal var _idValidationFailureMessages:Array;
+    
+    model_internal var _nameIsValid:Boolean;
+    model_internal var _nameValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _nameIsValidCacheInitialized:Boolean = false;
+    model_internal var _nameValidationFailureMessages:Array;
+    
+    model_internal var _priceIsValid:Boolean;
+    model_internal var _priceValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _priceIsValidCacheInitialized:Boolean = false;
+    model_internal var _priceValidationFailureMessages:Array;
     
     model_internal var _productIsValid:Boolean;
     model_internal var _productValidator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _productIsValidCacheInitialized:Boolean = false;
     model_internal var _productValidationFailureMessages:Array;
 
-    model_internal var _instance:_Super_Products_type;
+    model_internal var _instance:_Super_Product;
     model_internal static var _nullStyle:com.adobe.fiber.styles.Style = new com.adobe.fiber.styles.Style();
 
-    public function _Products_typeEntityMetadata(value : _Super_Products_type)
+    public function _ProductEntityMetadata(value : _Super_Product)
     {
         // initialize property maps
         if (model_internal::dependentsOnMap == null)
         {
             // dependents map
             model_internal::dependentsOnMap = new Object();
-            model_internal::dependentsOnMap["products"] = new Array();
+            model_internal::dependentsOnMap["id"] = new Array();
+            model_internal::dependentsOnMap["name"] = new Array();
+            model_internal::dependentsOnMap["price"] = new Array();
             model_internal::dependentsOnMap["product"] = new Array();
 
             // collection base map
             model_internal::collectionBaseMap = new Object();
-            model_internal::collectionBaseMap["product"] = "Planner.Product";
         }
 
         // Property type Map
         model_internal::propertyTypeMap = new Object();
-        model_internal::propertyTypeMap["products"] = "String";
-        model_internal::propertyTypeMap["product"] = "ArrayCollection";
+        model_internal::propertyTypeMap["id"] = "String";
+        model_internal::propertyTypeMap["name"] = "String";
+        model_internal::propertyTypeMap["price"] = "String";
+        model_internal::propertyTypeMap["product"] = "String";
 
         model_internal::_instance = value;
-        model_internal::_productsValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForProducts);
-        model_internal::_productsValidator.required = true;
-        model_internal::_productsValidator.requiredFieldError = "products is required";
-        //model_internal::_productsValidator.source = model_internal::_instance;
-        //model_internal::_productsValidator.property = "products";
+        model_internal::_idValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForId);
+        model_internal::_idValidator.required = true;
+        model_internal::_idValidator.requiredFieldError = "id is required";
+        //model_internal::_idValidator.source = model_internal::_instance;
+        //model_internal::_idValidator.property = "id";
+        model_internal::_nameValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForName);
+        model_internal::_nameValidator.required = true;
+        model_internal::_nameValidator.requiredFieldError = "name is required";
+        //model_internal::_nameValidator.source = model_internal::_instance;
+        //model_internal::_nameValidator.property = "name";
+        model_internal::_priceValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForPrice);
+        model_internal::_priceValidator.required = true;
+        model_internal::_priceValidator.requiredFieldError = "price is required";
+        //model_internal::_priceValidator.source = model_internal::_instance;
+        //model_internal::_priceValidator.property = "price";
         model_internal::_productValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForProduct);
         model_internal::_productValidator.required = true;
         model_internal::_productValidator.requiredFieldError = "product is required";
@@ -135,7 +156,7 @@ internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects
     override public function getDependants(propertyName:String):Array
     {
        if (model_internal::nonDerivedProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a data property of entity Products_type");
+            throw new Error(propertyName + " is not a data property of entity Product");
             
        return model_internal::dependentsOnMap[propertyName] as Array;  
     }
@@ -153,7 +174,7 @@ internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects
     override public function getCollectionBase(propertyName:String):String
     {
         if (model_internal::collectionProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a collection property of entity Products_type");
+            throw new Error(propertyName + " is not a collection property of entity Product");
 
         return model_internal::collectionBaseMap[propertyName];
     }
@@ -161,7 +182,7 @@ internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects
     override public function getPropertyType(propertyName:String):String
     {
         if (model_internal::allProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a property of Products_type");
+            throw new Error(propertyName + " is not a property of Product");
 
         return model_internal::propertyTypeMap[propertyName];
     }
@@ -175,7 +196,7 @@ internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects
     {
         if (model_internal::allProperties.indexOf(propertyName) == -1)
         {
-            throw new Error(propertyName + " does not exist for entity Products_type");
+            throw new Error(propertyName + " does not exist for entity Product");
         }
 
         return model_internal::_instance[propertyName];
@@ -185,7 +206,7 @@ internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects
     {
         if (model_internal::nonDerivedProperties.indexOf(propertyName) == -1)
         {
-            throw new Error(propertyName + " is not a modifiable property of entity Products_type");
+            throw new Error(propertyName + " is not a modifiable property of entity Product");
         }
 
         model_internal::_instance[propertyName] = value;
@@ -217,7 +238,7 @@ internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects
     {
         if (model_internal::allProperties.indexOf(propertyName) == -1)
         {
-            throw new Error(propertyName + " does not exist for entity Products_type");
+            throw new Error(propertyName + " does not exist for entity Product");
         }
 
         if (model_internal::allAlwaysAvailableProperties.indexOf(propertyName) != -1)
@@ -312,7 +333,19 @@ internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects
     }
 
     [Bindable(event="propertyChange")]
-    public function get isProductsAvailable():Boolean
+    public function get isIdAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isNameAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isPriceAvailable():Boolean
     {
         return true;
     }
@@ -327,12 +360,28 @@ internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects
     /**
      * derived property recalculation
      */
-    public function invalidateDependentOnProducts():void
+    public function invalidateDependentOnId():void
     {
-        if (model_internal::_productsIsValidCacheInitialized )
+        if (model_internal::_idIsValidCacheInitialized )
         {
-            model_internal::_instance.model_internal::_doValidationCacheOfProducts = null;
-            model_internal::calculateProductsIsValid();
+            model_internal::_instance.model_internal::_doValidationCacheOfId = null;
+            model_internal::calculateIdIsValid();
+        }
+    }
+    public function invalidateDependentOnName():void
+    {
+        if (model_internal::_nameIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfName = null;
+            model_internal::calculateNameIsValid();
+        }
+    }
+    public function invalidateDependentOnPrice():void
+    {
+        if (model_internal::_priceIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfPrice = null;
+            model_internal::calculatePriceIsValid();
         }
     }
     public function invalidateDependentOnProduct():void
@@ -350,44 +399,44 @@ internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects
     }
 
     [Bindable(event="propertyChange")]   
-    public function get productsStyle():com.adobe.fiber.styles.Style
+    public function get idStyle():com.adobe.fiber.styles.Style
     {
         return model_internal::_nullStyle;
     }
 
-    public function get productsValidator() : StyleValidator
+    public function get idValidator() : StyleValidator
     {
-        return model_internal::_productsValidator;
+        return model_internal::_idValidator;
     }
 
-    model_internal function set _productsIsValid_der(value:Boolean):void 
+    model_internal function set _idIsValid_der(value:Boolean):void 
     {
-        var oldValue:Boolean = model_internal::_productsIsValid;         
+        var oldValue:Boolean = model_internal::_idIsValid;         
         if (oldValue !== value)
         {
-            model_internal::_productsIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "productsIsValid", oldValue, value));
+            model_internal::_idIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "idIsValid", oldValue, value));
         }                             
     }
 
     [Bindable(event="propertyChange")]
-    public function get productsIsValid():Boolean
+    public function get idIsValid():Boolean
     {
-        if (!model_internal::_productsIsValidCacheInitialized)
+        if (!model_internal::_idIsValidCacheInitialized)
         {
-            model_internal::calculateProductsIsValid();
+            model_internal::calculateIdIsValid();
         }
 
-        return model_internal::_productsIsValid;
+        return model_internal::_idIsValid;
     }
 
-    model_internal function calculateProductsIsValid():void
+    model_internal function calculateIdIsValid():void
     {
-        var valRes:ValidationResultEvent = model_internal::_productsValidator.validate(model_internal::_instance.products)
-        model_internal::_productsIsValid_der = (valRes.results == null);
-        model_internal::_productsIsValidCacheInitialized = true;
+        var valRes:ValidationResultEvent = model_internal::_idValidator.validate(model_internal::_instance.id)
+        model_internal::_idIsValid_der = (valRes.results == null);
+        model_internal::_idIsValidCacheInitialized = true;
         if (valRes.results == null)
-             model_internal::productsValidationFailureMessages_der = emptyArray;
+             model_internal::idValidationFailureMessages_der = emptyArray;
         else
         {
             var _valFailures:Array = new Array();
@@ -395,22 +444,22 @@ internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects
             {
                 _valFailures.push(valRes.results[a].errorMessage);
             }
-            model_internal::productsValidationFailureMessages_der = _valFailures;
+            model_internal::idValidationFailureMessages_der = _valFailures;
         }
     }
 
     [Bindable(event="propertyChange")]
-    public function get productsValidationFailureMessages():Array
+    public function get idValidationFailureMessages():Array
     {
-        if (model_internal::_productsValidationFailureMessages == null)
-            model_internal::calculateProductsIsValid();
+        if (model_internal::_idValidationFailureMessages == null)
+            model_internal::calculateIdIsValid();
 
-        return _productsValidationFailureMessages;
+        return _idValidationFailureMessages;
     }
 
-    model_internal function set productsValidationFailureMessages_der(value:Array) : void
+    model_internal function set idValidationFailureMessages_der(value:Array) : void
     {
-        var oldValue:Array = model_internal::_productsValidationFailureMessages;
+        var oldValue:Array = model_internal::_idValidationFailureMessages;
 
         var needUpdate : Boolean = false;
         if (oldValue == null)
@@ -438,8 +487,208 @@ internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects
 
         if (needUpdate)
         {
-            model_internal::_productsValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "productsValidationFailureMessages", oldValue, value));
+            model_internal::_idValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "idValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get nameStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get nameValidator() : StyleValidator
+    {
+        return model_internal::_nameValidator;
+    }
+
+    model_internal function set _nameIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_nameIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_nameIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "nameIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get nameIsValid():Boolean
+    {
+        if (!model_internal::_nameIsValidCacheInitialized)
+        {
+            model_internal::calculateNameIsValid();
+        }
+
+        return model_internal::_nameIsValid;
+    }
+
+    model_internal function calculateNameIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_nameValidator.validate(model_internal::_instance.name)
+        model_internal::_nameIsValid_der = (valRes.results == null);
+        model_internal::_nameIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::nameValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::nameValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get nameValidationFailureMessages():Array
+    {
+        if (model_internal::_nameValidationFailureMessages == null)
+            model_internal::calculateNameIsValid();
+
+        return _nameValidationFailureMessages;
+    }
+
+    model_internal function set nameValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_nameValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_nameValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "nameValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get priceStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get priceValidator() : StyleValidator
+    {
+        return model_internal::_priceValidator;
+    }
+
+    model_internal function set _priceIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_priceIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_priceIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "priceIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get priceIsValid():Boolean
+    {
+        if (!model_internal::_priceIsValidCacheInitialized)
+        {
+            model_internal::calculatePriceIsValid();
+        }
+
+        return model_internal::_priceIsValid;
+    }
+
+    model_internal function calculatePriceIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_priceValidator.validate(model_internal::_instance.price)
+        model_internal::_priceIsValid_der = (valRes.results == null);
+        model_internal::_priceIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::priceValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::priceValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get priceValidationFailureMessages():Array
+    {
+        if (model_internal::_priceValidationFailureMessages == null)
+            model_internal::calculatePriceIsValid();
+
+        return _priceValidationFailureMessages;
+    }
+
+    model_internal function set priceValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_priceValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_priceValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "priceValidationFailureMessages", oldValue, value));
             // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
             // the entire entity.
             if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
@@ -574,9 +823,17 @@ internal class _Products_typeEntityMetadata extends com.adobe.fiber.valueobjects
      {
          switch(propertyName)
          {
-            case("products"):
+            case("id"):
             {
-                return productsValidationFailureMessages;
+                return idValidationFailureMessages;
+            }
+            case("name"):
+            {
+                return nameValidationFailureMessages;
+            }
+            case("price"):
+            {
+                return priceValidationFailureMessages;
             }
             case("product"):
             {

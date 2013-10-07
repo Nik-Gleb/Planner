@@ -1,8 +1,8 @@
 /**
  * This is a generated class and is not intended for modification.  To customize behavior
- * of this service wrapper you may modify the generated sub-class of this class - Products.as.
+ * of this service wrapper you may modify the generated sub-class of this class - Dets.as.
  */
-package services.products
+package services.dets
 {
 import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.services.wrapper.HTTPServiceWrapper;
@@ -10,17 +10,17 @@ import mx.rpc.AbstractOperation;
 import mx.rpc.AsyncToken;
 import mx.rpc.http.HTTPMultiService;
 import mx.rpc.http.Operation;
-import valueObjects.Product;
+import valueObjects.Detail;
 
 import com.adobe.serializers.xml.XMLSerializationFilter;
 
 [ExcludeClass]
-internal class _Super_Products extends com.adobe.fiber.services.wrapper.HTTPServiceWrapper
+internal class _Super_Dets extends com.adobe.fiber.services.wrapper.HTTPServiceWrapper
 {
     private static var serializer0:XMLSerializationFilter = new XMLSerializationFilter();
 
     // Constructor
-    public function _Super_Products()
+    public function _Super_Dets()
     {
         // initialize service control
         _serviceControl = new mx.rpc.http.HTTPMultiService();
@@ -33,8 +33,8 @@ internal class _Super_Products extends com.adobe.fiber.services.wrapper.HTTPServ
          operation.method = "GET";
          operation.serializationFilter = serializer0;
          operation.properties = new Object();
-         operation.properties["xPath"] = "/::products/::product";
-         operation.resultElementType = valueObjects.Product;
+         operation.properties["xPath"] = "/::details/::detail";
+         operation.resultElementType = valueObjects.Detail;
          operations.push(operation);
 
          _serviceControl.operationList = operations;  

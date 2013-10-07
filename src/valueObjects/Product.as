@@ -10,7 +10,7 @@
  * corresponding entity 
  **/ 
  
-package Planner
+package valueObjects
 {
 
 import com.adobe.fiber.core.model_internal;
@@ -30,17 +30,17 @@ public class Product extends _Super_Product
      */     
     public static function _initRemoteClassAlias() : void
     {
-        _Super_Product.model_internal::initRemoteClassAliasSingle(Planner.Product);
+        _Super_Product.model_internal::initRemoteClassAliasSingle(valueObjects.Product);
         _Super_Product.model_internal::initRemoteClassAliasAllRelated();
     }
      
     model_internal static function initRemoteClassAliasSingleChild() : void
     {
-        _Super_Product.model_internal::initRemoteClassAliasSingle(Planner.Product);
+        _Super_Product.model_internal::initRemoteClassAliasSingle(valueObjects.Product);
     }
     
     {
-        _Super_Product.model_internal::initRemoteClassAliasSingle(Planner.Product);
+        _Super_Product.model_internal::initRemoteClassAliasSingle(valueObjects.Product);
     }
     /** 
      * END OF DO NOT MODIFY SECTION

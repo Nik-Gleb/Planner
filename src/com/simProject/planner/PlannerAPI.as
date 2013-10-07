@@ -12,11 +12,21 @@ package com.simProject.planner
 {
 	import com.simProject.planner.core.PlannerScreen;
 	
+	import mx.collections.IList;
 	import mx.core.Application;
 	import mx.core.FlexGlobals;
+	import mx.rpc.CallResponder;
+	import mx.rpc.events.ResultEvent;
+	import mx.utils.ArrayUtil;
+	
+	import services.dets.Dets;
+	import services.products.Products;
 	
 	import spark.components.Button;
 	import spark.components.Panel;
+	
+	import valueObjects.Detail;
+	import valueObjects.Product;
 
 	/**
 	 * Главный класс приложения.
@@ -29,6 +39,16 @@ package com.simProject.planner
 	{
 		/** Информация о верссии. */
 		include "Version.as";
+		
+		/** Источник данных продуктов.*/
+		private static var productsCallResponder:CallResponder = new CallResponder();
+		/** Источник данных деталей.*/
+		private static var detailsCallResponder:CallResponder = new CallResponder();
+		
+		/** Массив продуктов. */
+		private static var products:Vector.<Product> = null;
+		/** Массив деталей. */
+		private static var details:Vector.<Detail> = null;
 		
 		/** Текущий экран приложения. */
 		private static var currentScreen:String = PlannerScreen.SHELF_SIZES;
@@ -48,6 +68,7 @@ package com.simProject.planner
 		public static function initialize():void
 		{
 			trace("PlannerAPI.initialize()");
+			getData();
 			
 		}
 		
@@ -108,7 +129,48 @@ package com.simProject.planner
 			}
 
 		}
+		
+		/**
+		 * Метод получает данные из источника данных.
+		 */ 
+		private static function getData():void
+		{
+			products = null;
+			details = null;
+			
+			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			
+			planner.products.addEventListener(ResultEvent.RESULT,
+				function(event:ResultEvent):void{onProductsLoaded(event.result)});
+			
+			planner.dets.addEventListener(ResultEvent.RESULT,
+				function(event:ResultEvent):void{onDetailsLoaded(event.result)});
+			
+			productsCallResponder.token = planner.products.getData();
+			detailsCallResponder.token = planner.dets.getData();
+			
+		}
+		
+		/**
+		 * Вызывается, когда данные о продуктах получены.
+		 * @param data список продуктов.
+		 */ 
+		private static function onProductsLoaded(data:Object):void
+		{
+			products = Vector.<Product>(data);
+		}
+		
+		/**
+		 * Вызывается, когда данные о деталях получены.
+		 * @param data список деталей.
+		 */ 
+		private static function onDetailsLoaded(data:Object):void
+		{
+			details = Vector.<Product>(data);
+		}
 
+		
+		
 		/**
 		 * Вызывается, когда размер полки установлен.
 		 */
@@ -159,6 +221,11 @@ package com.simProject.planner
 			}
 
 			trace(currentScreen);
+			
+			
+			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			//planner.getData();
+			
 		}
 		
 		/**

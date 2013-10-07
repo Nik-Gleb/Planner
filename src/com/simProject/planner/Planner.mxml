@@ -3,38 +3,18 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:products="services.products.*"
+			   xmlns:dets="services.dets.*"
 			   minWidth="640" minHeight="480"
-			   creationComplete="application_creationCompleteHandler(event)"
+			   applicationComplete="{PlannerAPI.initialize()}"
 			   pageTitle="Planner" viewSourceURL="srcview/index.html">
-	<fx:Script>
-		<![CDATA[
-			import mx.controls.Alert;
-			import mx.events.FlexEvent;
-			
-			protected function list_creationCompleteHandler(event:FlexEvent):void
-			{
-				getDataResult.token = products.getData();
-			}
-			
-			
-			protected function application_creationCompleteHandler(event:FlexEvent):void
-			{
-				getDataResult2.token = products.getData();
-			}
-			
-		]]>
-	</fx:Script>
 	<fx:Declarations>
-		<s:CallResponder id="getDataResult"/>
 		<products:Products id="products"
-						   fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
-						   showBusyCursor="true"/>
-		<s:CallResponder id="getDataResult2"/>
-		<!-- Разместить невизуальные элементы (например, службы или объекты значений) -->
+						   showBusyCursor="true"/>		
+		<dets:Dets id="dets"
+				   showBusyCursor="true"/>
 	</fx:Declarations>
 	<s:controlBarContent>
-		<s:HGroup id="titlePanel"
-				  width="163" height="25"
+		<s:HGroup id="titlePanel" width="163" height="25"
 				  horizontalAlign="center" verticalAlign="middle">
 			<s:Button id="backButton" label="Назад"
 					  click="PlannerAPI.onBackButtonClick()" enabled="false"/>

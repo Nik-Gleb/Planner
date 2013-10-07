@@ -1,5 +1,5 @@
 /**
- * This is a generated sub-class of _Products_type.as and is intended for behavior
+ * This is a generated sub-class of _Detail.as and is intended for behavior
  * customization.  This class is only generated when there is no file already present
  * at its target location.  Thus custom behavior that you add here will survive regeneration
  * of the super-class. 
@@ -15,7 +15,7 @@ package valueObjects
 
 import com.adobe.fiber.core.model_internal;
 
-public class Products_type extends _Super_Products_type
+public class Detail extends _Super_Detail
 {
     /** 
      * DO NOT MODIFY THIS STATIC INITIALIZER - IT IS NECESSARY
@@ -30,17 +30,17 @@ public class Products_type extends _Super_Products_type
      */     
     public static function _initRemoteClassAlias() : void
     {
-        _Super_Products_type.model_internal::initRemoteClassAliasSingle(valueObjects.Products_type);
-        _Super_Products_type.model_internal::initRemoteClassAliasAllRelated();
+        _Super_Detail.model_internal::initRemoteClassAliasSingle(valueObjects.Detail);
+        _Super_Detail.model_internal::initRemoteClassAliasAllRelated();
     }
      
     model_internal static function initRemoteClassAliasSingleChild() : void
     {
-        _Super_Products_type.model_internal::initRemoteClassAliasSingle(valueObjects.Products_type);
+        _Super_Detail.model_internal::initRemoteClassAliasSingle(valueObjects.Detail);
     }
     
     {
-        _Super_Products_type.model_internal::initRemoteClassAliasSingle(valueObjects.Products_type);
+        _Super_Detail.model_internal::initRemoteClassAliasSingle(valueObjects.Detail);
     }
     /** 
      * END OF DO NOT MODIFY SECTION

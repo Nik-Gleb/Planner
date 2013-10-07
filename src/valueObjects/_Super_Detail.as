@@ -1,9 +1,9 @@
 /**
  * This is a generated class and is not intended for modification.  To customize behavior
- * of this value object you may modify the generated sub-class of this class - Product.as.
+ * of this value object you may modify the generated sub-class of this class - Detail.as.
  */
 
-package Planner
+package valueObjects
 {
 import com.adobe.fiber.services.IFiberManagingService;
 import com.adobe.fiber.util.FiberUtils;
@@ -24,7 +24,7 @@ import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 use namespace model_internal;
 
 [ExcludeClass]
-public class _Super_Product extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
+public class _Super_Detail extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void
     {
@@ -34,7 +34,7 @@ public class _Super_Product extends flash.events.EventDispatcher implements com.
     {
     }
 
-    model_internal var _dminternal_model : _ProductEntityMetadata;
+    model_internal var _dminternal_model : _DetailEntityMetadata;
     model_internal var _changedObjects:mx.collections.ArrayCollection = new ArrayCollection();
 
     public function getChangedObjects() : Array
@@ -52,7 +52,9 @@ public class _Super_Product extends flash.events.EventDispatcher implements com.
      * properties
      */
     private var _internal_id : String;
-    private var _internal_product : String;
+    private var _internal_name : String;
+    private var _internal_price : String;
+    private var _internal_detail : String;
 
     private static var emptyArray:Array = new Array();
 
@@ -64,13 +66,15 @@ public class _Super_Product extends flash.events.EventDispatcher implements com.
 
     model_internal var _changeWatcherArray:Array = new Array();
 
-    public function _Super_Product()
+    public function _Super_Detail()
     {
-        _model = new _ProductEntityMetadata(this);
+        _model = new _DetailEntityMetadata(this);
 
         // Bind to own data or source properties for cache invalidation triggering
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "id", model_internal::setterListenerId));
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "product", model_internal::setterListenerProduct));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "name", model_internal::setterListenerName));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "price", model_internal::setterListenerPrice));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "detail", model_internal::setterListenerDetail));
 
     }
 
@@ -85,9 +89,21 @@ public class _Super_Product extends flash.events.EventDispatcher implements com.
     }
 
     [Bindable(event="propertyChange")]
-    public function get product() : String
+    public function get name() : String
     {
-        return _internal_product;
+        return _internal_name;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get price() : String
+    {
+        return _internal_price;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get detail() : String
+    {
+        return _internal_detail;
     }
 
     public function clearAssociations() : void
@@ -108,13 +124,33 @@ public class _Super_Product extends flash.events.EventDispatcher implements com.
         }
     }
 
-    public function set product(value:String) : void
+    public function set name(value:String) : void
     {
-        var oldValue:String = _internal_product;
+        var oldValue:String = _internal_name;
         if (oldValue !== value)
         {
-            _internal_product = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "product", oldValue, _internal_product));
+            _internal_name = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "name", oldValue, _internal_name));
+        }
+    }
+
+    public function set price(value:String) : void
+    {
+        var oldValue:String = _internal_price;
+        if (oldValue !== value)
+        {
+            _internal_price = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "price", oldValue, _internal_price));
+        }
+    }
+
+    public function set detail(value:String) : void
+    {
+        var oldValue:String = _internal_detail;
+        if (oldValue !== value)
+        {
+            _internal_detail = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "detail", oldValue, _internal_detail));
         }
     }
 
@@ -135,9 +171,19 @@ public class _Super_Product extends flash.events.EventDispatcher implements com.
         _model.invalidateDependentOnId();
     }
 
-    model_internal function setterListenerProduct(value:flash.events.Event):void
+    model_internal function setterListenerName(value:flash.events.Event):void
     {
-        _model.invalidateDependentOnProduct();
+        _model.invalidateDependentOnName();
+    }
+
+    model_internal function setterListenerPrice(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnPrice();
+    }
+
+    model_internal function setterListenerDetail(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnDetail();
     }
 
 
@@ -166,10 +212,20 @@ public class _Super_Product extends flash.events.EventDispatcher implements com.
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_idValidationFailureMessages);
         }
-        if (!_model.productIsValid)
+        if (!_model.nameIsValid)
         {
             propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_productValidationFailureMessages);
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_nameValidationFailureMessages);
+        }
+        if (!_model.priceIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_priceValidationFailureMessages);
+        }
+        if (!_model.detailIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_detailValidationFailureMessages);
         }
 
         model_internal::_cacheInitialized_isValid = true;
@@ -198,14 +254,14 @@ public class _Super_Product extends flash.events.EventDispatcher implements com.
 
     [Transient]
     [Bindable(event="propertyChange")]
-    public function get _model() : _ProductEntityMetadata
+    public function get _model() : _DetailEntityMetadata
     {
         return model_internal::_dminternal_model;
     }
 
-    public function set _model(value : _ProductEntityMetadata) : void
+    public function set _model(value : _DetailEntityMetadata) : void
     {
-        var oldValue : _ProductEntityMetadata = model_internal::_dminternal_model;
+        var oldValue : _DetailEntityMetadata = model_internal::_dminternal_model;
         if (oldValue !== value)
         {
             model_internal::_dminternal_model = value;
@@ -277,29 +333,83 @@ public class _Super_Product extends flash.events.EventDispatcher implements com.
         return validationFailures;
     }
     
-    model_internal var _doValidationCacheOfProduct : Array = null;
-    model_internal var _doValidationLastValOfProduct : String;
+    model_internal var _doValidationCacheOfName : Array = null;
+    model_internal var _doValidationLastValOfName : String;
 
-    model_internal function _doValidationForProduct(valueIn:Object):Array
+    model_internal function _doValidationForName(valueIn:Object):Array
     {
         var value : String = valueIn as String;
 
-        if (model_internal::_doValidationCacheOfProduct != null && model_internal::_doValidationLastValOfProduct == value)
-           return model_internal::_doValidationCacheOfProduct ;
+        if (model_internal::_doValidationCacheOfName != null && model_internal::_doValidationLastValOfName == value)
+           return model_internal::_doValidationCacheOfName ;
 
-        _model.model_internal::_productIsValidCacheInitialized = true;
+        _model.model_internal::_nameIsValidCacheInitialized = true;
         var validationFailures:Array = new Array();
         var errorMessage:String;
         var failure:Boolean;
 
         var valRes:ValidationResult;
-        if (_model.isProductAvailable && _internal_product == null)
+        if (_model.isNameAvailable && _internal_name == null)
         {
-            validationFailures.push(new ValidationResult(true, "", "", "product is required"));
+            validationFailures.push(new ValidationResult(true, "", "", "name is required"));
         }
 
-        model_internal::_doValidationCacheOfProduct = validationFailures;
-        model_internal::_doValidationLastValOfProduct = value;
+        model_internal::_doValidationCacheOfName = validationFailures;
+        model_internal::_doValidationLastValOfName = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfPrice : Array = null;
+    model_internal var _doValidationLastValOfPrice : String;
+
+    model_internal function _doValidationForPrice(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfPrice != null && model_internal::_doValidationLastValOfPrice == value)
+           return model_internal::_doValidationCacheOfPrice ;
+
+        _model.model_internal::_priceIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isPriceAvailable && _internal_price == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "price is required"));
+        }
+
+        model_internal::_doValidationCacheOfPrice = validationFailures;
+        model_internal::_doValidationLastValOfPrice = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfDetail : Array = null;
+    model_internal var _doValidationLastValOfDetail : String;
+
+    model_internal function _doValidationForDetail(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfDetail != null && model_internal::_doValidationLastValOfDetail == value)
+           return model_internal::_doValidationCacheOfDetail ;
+
+        _model.model_internal::_detailIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isDetailAvailable && _internal_detail == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "detail is required"));
+        }
+
+        model_internal::_doValidationCacheOfDetail = validationFailures;
+        model_internal::_doValidationLastValOfDetail = value;
 
         return validationFailures;
     }
