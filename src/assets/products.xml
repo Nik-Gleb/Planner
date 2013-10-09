@@ -20,22 +20,22 @@
 				<product id="15" name="Продукт шестнадцатый" price="800">Продукт шестнадцатый.</product>
 			</products>
 			<details>Детали.
-				<detail id="0" name="Деталь первая" price="5">Деталь первая.</detail>
-				<detail id="1" name="Деталь вторая" price="10">Деталь вторая.</detail>
-				<detail id="2" name="Деталь третья" price="15">Деталь третья.</detail>
-				<detail id="3" name="Деталь четвёртая" price="20">Деталь четвёртая.</detail>
-				<detail id="4" name="Деталь пятая" price="25">Деталь пятая.</detail>
-				<detail id="5" name="Деталь шестая" price="30">Деталь шестая.</detail>
-				<detail id="6" name="Деталь седьмая" price="35">Деталь седьмая.</detail>
-				<detail id="7" name="Деталь восьмая" price="40">Деталь восьмая.</detail>
-				<detail id="8" name="Деталь девятая" price="45">Деталь девятая.</detail>
-				<detail id="9" name="Деталь десятая" price="50">Деталь десятая.</detail>
-				<detail id="10" name="Деталь одиннадцатая" price="55">Деталь одиннадцатая.</detail>
-				<detail id="11" name="Деталь двенадцатая" price="60">Деталь двенадцатая.</detail>
-				<detail id="12" name="Деталь тринадцатая" price="65">Деталь тринадцатая.</detail>
-				<detail id="13" name="Деталь четырнадцатая" price="70">Деталь четырнадцатая.</detail>
-				<detail id="14" name="Деталь пятнадцатая" price="75">Деталь пятнадцатая.</detail>
-				<detail id="15" name="Деталь шестнадцатая" price="80">Деталь шестнадцатая.</detail>
+				<detail id="16" name="Деталь первая" price="5">Деталь первая.</detail>
+				<detail id="17" name="Деталь вторая" price="10">Деталь вторая.</detail>
+				<detail id="18" name="Деталь третья" price="15">Деталь третья.</detail>
+				<detail id="19" name="Деталь четвёртая" price="20">Деталь четвёртая.</detail>
+				<detail id="20" name="Деталь пятая" price="25">Деталь пятая.</detail>
+				<detail id="21" name="Деталь шестая" price="30">Деталь шестая.</detail>
+				<detail id="22" name="Деталь седьмая" price="35">Деталь седьмая.</detail>
+				<detail id="23" name="Деталь восьмая" price="40">Деталь восьмая.</detail>
+				<detail id="24" name="Деталь девятая" price="45">Деталь девятая.</detail>
+				<detail id="25" name="Деталь десятая" price="50">Деталь десятая.</detail>
+				<detail id="26" name="Деталь одиннадцатая" price="55">Деталь одиннадцатая.</detail>
+				<detail id="27" name="Деталь двенадцатая" price="60">Деталь двенадцатая.</detail>
+				<detail id="28" name="Деталь тринадцатая" price="65">Деталь тринадцатая.</detail>
+				<detail id="29" name="Деталь четырнадцатая" price="70">Деталь четырнадцатая.</detail>
+				<detail id="30" name="Деталь пятнадцатая" price="75">Деталь пятнадцатая.</detail>
+				<detail id="31" name="Деталь шестнадцатая" price="80">Деталь шестнадцатая.</detail>
 			</details>
 			<templates>Шаблоны.
 				<template id="0" name="Шаблон первый">

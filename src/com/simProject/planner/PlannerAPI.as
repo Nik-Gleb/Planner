@@ -138,10 +138,68 @@ package com.simProject.planner
 		 */ 
 		public static function onProductsListDoubleClick(data:Object):void
 		{
+			invalidateDetails();
+			
 			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
 			var index:int = planner.resultList.selectedIndex<1?0:planner.resultList.selectedIndex;
 			resultProducts.addItemAt(data,index);
 			planner.resultList.selectedIndex = index;
+			
+			
+		}
+		
+		private static function invalidateDetails():void
+		{
+			if(resultProducts.length == 0){
+				var product:Product = new Product();
+				var detail:Detail = details[0];
+				product.id = detail.id;
+				product.name = detail.name;
+				product.price = detail.price;
+				resultProducts.addItem(product);
+			}else{
+				var hasProducts:Boolean = false;
+				for (var i:int = 0; i < resultProducts.length; i++) 
+				{
+					if(uint(Product(resultProducts[i]).id)<16){
+						hasProducts = true;
+						break;
+					}
+				}
+				
+				if(!hasProducts){
+					resultProducts.removeAll();
+					return;
+				}
+				
+				var detail25:int = -1;
+				for (var j:int = 0; j < resultProducts.length; j++) 
+				{
+					if(uint(Product(resultProducts[j]).id)==25){
+						detail25 = j;
+						break;
+					}
+				}
+				
+				
+				if(detail25>-1){
+					if(resultProducts.length<10)resultProducts.removeItemAt(detail25);
+				}else{
+					if(resultProducts.length>9){
+						var product:Product = new Product();
+						var detail:Detail = details[9];
+						product.id = detail.id;
+						product.name = detail.name;
+						product.price = detail.price;
+						resultProducts.addItem(product);
+
+					}
+				}
+
+				
+			}
+			
+			
 		}
 		
 		/**
@@ -181,7 +239,7 @@ package com.simProject.planner
 			}
 			
 			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
-			var index:int = planner.resultList.selectedIndex<1?0:planner.resultList.selectedIndex-1;
+			var index:int = planner.resultList.selectedIndex<1?0:planner.resultList.selectedIndex;
 			resultProducts.addAllAt(list,index);
 			planner.resultList.selectedIndex = index;
 
@@ -192,7 +250,9 @@ package com.simProject.planner
 		 */ 
 		public static function onResultsListDoubleClick(data:Object):void
 		{
+			if(uint(Product(data).id)>15)return;
 			resultProducts.removeItemAt(resultProducts.getItemIndex(data));
+			invalidateDetails();
 		}
 
 		

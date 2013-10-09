@@ -9,6 +9,7 @@
 		]]>
 	</fx:Script>
 	<s:HGroup height="24" verticalAlign="middle" paddingBottom="4" paddingLeft="4" paddingRight="4" paddingTop="4" gap="8">
+		<s:Image source="{'assets/product_' + Product(data).id + '.png'}"/>
 		<s:Label text="{Product(data).name}"/>	
 	</s:HGroup>
 	

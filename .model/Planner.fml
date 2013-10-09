@@ -3,58 +3,6 @@
   <annotation name="ActionScriptGeneration">
     <item name="FullyQualifyReferences">true</item>
   </annotation>
-  <service name="Products">
-    <annotation name="ActionScriptGeneration">
-      <item name="ServiceType">HTTPMultiService</item>
-      <item name="Package">services.products</item>
-    </annotation>
-    <annotation name="ServiceTypeGroup">
-      <item name="ServiceBackendType">XML</item>
-    </annotation>
-    <annotation name="ServiceConfig">
-      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
-      <item name="LINKED_FILE"></item>
-    </annotation>
-    <function name="getData" return-type="Product[]">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="ActionScriptGeneration">
-        <item name="SerializationFilter">com.adobe.serializers.xml.XMLSerializationFilter</item>
-        <item name="method">GET</item>
-        <item name="url">assets/products.xml</item>
-      </annotation>
-      <annotation name="url group">
-        <item name="displayUrl">assets/products.xml</item>
-        <item name="completeURL">C:/Users/Глеб/Documents/GitHub/Planner/src/assets/products.xml</item>
-        <item name="isUrl">false</item>
-      </annotation>
-      <annotation name="Properties">
-        <item name="xPath">/::products/::product</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-  </service>
-  <entity name="Product">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">Product</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">Products</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <property name="id" type="string" required="true"/>
-    <property name="name" type="string" required="true"/>
-    <property name="price" type="string" required="true"/>
-    <property name="product" type="string" required="true"/>
-  </entity>
   <service name="Dets">
     <annotation name="ActionScriptGeneration">
       <item name="ServiceType">HTTPMultiService</item>
@@ -106,6 +54,58 @@
     <property name="name" type="string" required="true"/>
     <property name="price" type="string" required="true"/>
     <property name="detail" type="string" required="true"/>
+  </entity>
+  <service name="Products">
+    <annotation name="ActionScriptGeneration">
+      <item name="ServiceType">HTTPMultiService</item>
+      <item name="Package">services.products</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">XML</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="LINKED_FILE"></item>
+    </annotation>
+    <function name="getData" return-type="Product[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ActionScriptGeneration">
+        <item name="SerializationFilter">com.adobe.serializers.xml.XMLSerializationFilter</item>
+        <item name="method">GET</item>
+        <item name="url">assets/products.xml</item>
+      </annotation>
+      <annotation name="url group">
+        <item name="displayUrl">assets/products.xml</item>
+        <item name="completeURL">C:/Users/Глеб/Documents/GitHub/Planner/src/assets/products.xml</item>
+        <item name="isUrl">false</item>
+      </annotation>
+      <annotation name="Properties">
+        <item name="xPath">/::products/::product</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+  </service>
+  <entity name="Product">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Product</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Products</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="string" required="true"/>
+    <property name="name" type="string" required="true"/>
+    <property name="price" type="string" required="true"/>
+    <property name="product" type="string" required="true"/>
   </entity>
   <service name="TemplatesService">
     <annotation name="ActionScriptGeneration">
