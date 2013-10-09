@@ -12,7 +12,12 @@ package com.simProject.planner
 {
 	import com.simProject.planner.core.PlannerScreen;
 	
+	import flash.events.MouseEvent;
+	
+	import mx.collections.ArrayCollection;
+	import mx.collections.ArrayList;
 	import mx.collections.IList;
+	import mx.controls.List;
 	import mx.core.Application;
 	import mx.core.FlexGlobals;
 	import mx.rpc.CallResponder;
@@ -60,6 +65,9 @@ package com.simProject.planner
 		
 		/** Текущий экран приложения. */
 		private static var currentScreen:String = PlannerScreen.SHELF_SIZES;
+		
+		/** Конечный список товаров для отчёта. */ 
+		public static var resultProducts:ArrayCollection = new ArrayCollection();
 		
 		/**
 		 * Конструктор.
@@ -126,6 +134,17 @@ package com.simProject.planner
 		}
 		
 		/**
+		 * Метод вызывается при двойном клике по пункту в списке продуктов.
+		 */ 
+		public static function onProductsListDoubleClick(data:Object):void
+		{
+			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			var index:int = planner.resultList.selectedIndex<1?0:planner.resultList.selectedIndex;
+			resultProducts.addItemAt(data,index);
+			planner.resultList.selectedIndex = index;
+		}
+		
+		/**
 		 * Метод вызывается при выборе пункта в списке шаблонов.
 		 */ 
 		public static function onTemplatesListChanged():void
@@ -146,6 +165,34 @@ package com.simProject.planner
 			planner.templateInfo.text = "TEMPLATE ID:	" + template.id + "\n" +
 				products_str;
 			
+		}
+		
+		/**
+		 * Метод вызывается при двойном клике по пункту в списке шаблонов.
+		 */ 
+		public static function onTemplatesListDoubleClick(data:Object):void
+		{
+			var template:Template = Template(data);
+			var list:ArrayList = new ArrayList();
+			for (var i:int = 0; i < template.product_id.length; i++) 
+			{
+				var product:Product = products[uint(Product_id(template.product_id[i]).id)];
+				list.addItem(product);
+			}
+			
+			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			var index:int = planner.resultList.selectedIndex<1?0:planner.resultList.selectedIndex-1;
+			resultProducts.addAllAt(list,index);
+			planner.resultList.selectedIndex = index;
+
+		}
+
+		/**
+		 * Метод вызывается при двойном клике по пункту в списке результатов.
+		 */ 
+		public static function onResultsListDoubleClick(data:Object):void
+		{
+			resultProducts.removeItemAt(resultProducts.getItemIndex(data));
 		}
 
 		
@@ -234,8 +281,6 @@ package com.simProject.planner
 			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
 			planner.templatesList.dataProvider = templatesCallResponder.lastResult;
 
-			//trace(templates);
-			trace(products[uint(Product_id(templates[0].product_id[2]).id)].name);
 		}
 		
 		/**
@@ -261,7 +306,6 @@ package com.simProject.planner
 				throw new Error("Рыба схавала вертолёт.");
 			}
 
-			trace(currentScreen);
 		}
 		
 		/**
@@ -287,8 +331,6 @@ package com.simProject.planner
 				throw new Error("Рыба схавала вертолёт.");
 			}
 
-			trace(currentScreen);
-			
 			
 			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
 			//planner.getData();
@@ -319,7 +361,6 @@ package com.simProject.planner
 			}
 
 			
-			trace(currentScreen);
 			
 		}
 
@@ -347,7 +388,6 @@ package com.simProject.planner
 				throw new Error("Рыба схавала вертолёт.");
 			}
 			
-			trace(currentScreen);
 		}
 
 

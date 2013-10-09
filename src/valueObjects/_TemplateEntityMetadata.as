@@ -24,14 +24,14 @@ internal class _TemplateEntityMetadata extends com.adobe.fiber.valueobjects.Abst
 {
     private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("id", "product_id");
+    model_internal static var allProperties:Array = new Array("id", "name", "product_id");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("id", "product_id");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("id", "product_id");
+    model_internal static var allRequiredProperties:Array = new Array("id", "name", "product_id");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("id", "name", "product_id");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("id", "product_id");
+    model_internal static var dataProperties:Array = new Array("id", "name", "product_id");
     model_internal static var sourceProperties:Array = emptyArray
-    model_internal static var nonDerivedProperties:Array = new Array("id", "product_id");
+    model_internal static var nonDerivedProperties:Array = new Array("id", "name", "product_id");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array("product_id");
     model_internal static var collectionBaseMap:Object;
@@ -45,6 +45,11 @@ internal class _TemplateEntityMetadata extends com.adobe.fiber.valueobjects.Abst
     model_internal var _idValidator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _idIsValidCacheInitialized:Boolean = false;
     model_internal var _idValidationFailureMessages:Array;
+    
+    model_internal var _nameIsValid:Boolean;
+    model_internal var _nameValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _nameIsValidCacheInitialized:Boolean = false;
+    model_internal var _nameValidationFailureMessages:Array;
     
     model_internal var _product_idIsValid:Boolean;
     model_internal var _product_idValidator:com.adobe.fiber.styles.StyleValidator;
@@ -62,6 +67,7 @@ internal class _TemplateEntityMetadata extends com.adobe.fiber.valueobjects.Abst
             // dependents map
             model_internal::dependentsOnMap = new Object();
             model_internal::dependentsOnMap["id"] = new Array();
+            model_internal::dependentsOnMap["name"] = new Array();
             model_internal::dependentsOnMap["product_id"] = new Array();
 
             // collection base map
@@ -72,6 +78,7 @@ internal class _TemplateEntityMetadata extends com.adobe.fiber.valueobjects.Abst
         // Property type Map
         model_internal::propertyTypeMap = new Object();
         model_internal::propertyTypeMap["id"] = "String";
+        model_internal::propertyTypeMap["name"] = "String";
         model_internal::propertyTypeMap["product_id"] = "ArrayCollection";
 
         model_internal::_instance = value;
@@ -80,6 +87,11 @@ internal class _TemplateEntityMetadata extends com.adobe.fiber.valueobjects.Abst
         model_internal::_idValidator.requiredFieldError = "id is required";
         //model_internal::_idValidator.source = model_internal::_instance;
         //model_internal::_idValidator.property = "id";
+        model_internal::_nameValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForName);
+        model_internal::_nameValidator.required = true;
+        model_internal::_nameValidator.requiredFieldError = "name is required";
+        //model_internal::_nameValidator.source = model_internal::_instance;
+        //model_internal::_nameValidator.property = "name";
         model_internal::_product_idValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForProduct_id);
         model_internal::_product_idValidator.required = true;
         model_internal::_product_idValidator.requiredFieldError = "product_id is required";
@@ -318,6 +330,12 @@ internal class _TemplateEntityMetadata extends com.adobe.fiber.valueobjects.Abst
     }
 
     [Bindable(event="propertyChange")]
+    public function get isNameAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
     public function get isProduct_idAvailable():Boolean
     {
         return true;
@@ -333,6 +351,14 @@ internal class _TemplateEntityMetadata extends com.adobe.fiber.valueobjects.Abst
         {
             model_internal::_instance.model_internal::_doValidationCacheOfId = null;
             model_internal::calculateIdIsValid();
+        }
+    }
+    public function invalidateDependentOnName():void
+    {
+        if (model_internal::_nameIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfName = null;
+            model_internal::calculateNameIsValid();
         }
     }
     public function invalidateDependentOnProduct_id():void
@@ -440,6 +466,106 @@ internal class _TemplateEntityMetadata extends com.adobe.fiber.valueobjects.Abst
         {
             model_internal::_idValidationFailureMessages = value;   
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "idValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get nameStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get nameValidator() : StyleValidator
+    {
+        return model_internal::_nameValidator;
+    }
+
+    model_internal function set _nameIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_nameIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_nameIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "nameIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get nameIsValid():Boolean
+    {
+        if (!model_internal::_nameIsValidCacheInitialized)
+        {
+            model_internal::calculateNameIsValid();
+        }
+
+        return model_internal::_nameIsValid;
+    }
+
+    model_internal function calculateNameIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_nameValidator.validate(model_internal::_instance.name)
+        model_internal::_nameIsValid_der = (valRes.results == null);
+        model_internal::_nameIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::nameValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::nameValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get nameValidationFailureMessages():Array
+    {
+        if (model_internal::_nameValidationFailureMessages == null)
+            model_internal::calculateNameIsValid();
+
+        return _nameValidationFailureMessages;
+    }
+
+    model_internal function set nameValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_nameValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_nameValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "nameValidationFailureMessages", oldValue, value));
             // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
             // the entire entity.
             if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
@@ -577,6 +703,10 @@ internal class _TemplateEntityMetadata extends com.adobe.fiber.valueobjects.Abst
             case("id"):
             {
                 return idValidationFailureMessages;
+            }
+            case("name"):
+            {
+                return nameValidationFailureMessages;
             }
             case("product_id"):
             {

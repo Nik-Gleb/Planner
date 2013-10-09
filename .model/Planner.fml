@@ -137,7 +137,10 @@
         <item name="xPath">/::templates/::template</item>
       </annotation>
       <annotation name="original signature">
-        <item name="returnType">opaque</item>
+        <item name="returnType">Template</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,name,product_id</item>
       </annotation>
     </function>
   </service>
@@ -169,7 +172,11 @@
     <annotation name="ActionScriptGeneration">
       <item name="Package">valueObjects</item>
     </annotation>
+    <annotation name="getData">
+      <item name="propertySpecifier">id,name,product_id</item>
+    </annotation>
     <property name="id" type="string" required="true"/>
+    <property name="name" type="string" required="true"/>
     <property name="product_id" type="Product_id[]" required="true"/>
   </entity>
 </model>

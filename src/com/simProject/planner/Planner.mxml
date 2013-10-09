@@ -34,19 +34,21 @@
 	<s:Panel id="constructor_panel" visible="true" width="620" height="419"
 			 horizontalCenter="0" title="Конструктор стенки" verticalCenter="0">
 		<s:List id="productsList" x="10" y="10" width="156" height="110"
-				change="{PlannerAPI.onProductsListChanged()}" dragEnabled="true"
-				itemRenderer="com.simProject.planner.core.productListItemRenderer"
-				labelField="id" verticalScrollPolicy="auto">
+				change="{PlannerAPI.onProductsListChanged()}"
+				itemRenderer="com.simProject.planner.ProductItemListRenderer"
+				labelField="name" verticalScrollPolicy="auto">
 		</s:List>
 		<s:List id="templatesList" x="10" y="130" width="157" height="110"
 				change="{PlannerAPI.onTemplatesListChanged()}"
-				dragEnabled="true" labelField="id" verticalScrollPolicy="auto">
+				itemRenderer="com.simProject.planner.TemplateItemListRenderer"
+				labelField="name" verticalScrollPolicy="auto">
 		</s:List>
 		<s:RichText id="productInfo" x="174" y="10" width="267" height="110"/>
 		<s:RichText id="templateInfo" x="174" y="128" width="267" height="112"/>
 		<s:List id="resultList" x="449" y="10" width="159" height="230"
-				dropEnabled="true" labelField="id" dragEnabled="true"
-				dragMoveEnabled="true">
+				itemRenderer="com.simProject.planner.ResultItemListRenderer"
+				dataProvider="{PlannerAPI.resultProducts}"
+				labelField="id">
 		</s:List>
 	</s:Panel>
 	<s:Panel id="report_panel" visible="false" width="620" height="419"

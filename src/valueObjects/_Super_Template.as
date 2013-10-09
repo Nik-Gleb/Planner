@@ -55,6 +55,7 @@ public class _Super_Template extends flash.events.EventDispatcher implements com
      * properties
      */
     private var _internal_id : String;
+    private var _internal_name : String;
     private var _internal_product_id : ArrayCollection;
     model_internal var _internal_product_id_leaf:valueObjects.Product_id;
 
@@ -74,6 +75,7 @@ public class _Super_Template extends flash.events.EventDispatcher implements com
 
         // Bind to own data or source properties for cache invalidation triggering
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "id", model_internal::setterListenerId));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "name", model_internal::setterListenerName));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "product_id", model_internal::setterListenerProduct_id));
 
     }
@@ -86,6 +88,12 @@ public class _Super_Template extends flash.events.EventDispatcher implements com
     public function get id() : String
     {
         return _internal_id;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get name() : String
+    {
+        return _internal_name;
     }
 
     [Bindable(event="propertyChange")]
@@ -109,6 +117,16 @@ public class _Super_Template extends flash.events.EventDispatcher implements com
         {
             _internal_id = value;
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "id", oldValue, _internal_id));
+        }
+    }
+
+    public function set name(value:String) : void
+    {
+        var oldValue:String = _internal_name;
+        if (oldValue !== value)
+        {
+            _internal_name = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "name", oldValue, _internal_name));
         }
     }
 
@@ -154,6 +172,11 @@ public class _Super_Template extends flash.events.EventDispatcher implements com
         _model.invalidateDependentOnId();
     }
 
+    model_internal function setterListenerName(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnName();
+    }
+
     model_internal function setterListenerProduct_id(value:flash.events.Event):void
     {
         if (value is mx.events.PropertyChangeEvent)
@@ -191,6 +214,11 @@ public class _Super_Template extends flash.events.EventDispatcher implements com
         {
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_idValidationFailureMessages);
+        }
+        if (!_model.nameIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_nameValidationFailureMessages);
         }
         if (!_model.product_idIsValid)
         {
@@ -299,6 +327,33 @@ public class _Super_Template extends flash.events.EventDispatcher implements com
 
         model_internal::_doValidationCacheOfId = validationFailures;
         model_internal::_doValidationLastValOfId = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfName : Array = null;
+    model_internal var _doValidationLastValOfName : String;
+
+    model_internal function _doValidationForName(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfName != null && model_internal::_doValidationLastValOfName == value)
+           return model_internal::_doValidationCacheOfName ;
+
+        _model.model_internal::_nameIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isNameAvailable && _internal_name == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "name is required"));
+        }
+
+        model_internal::_doValidationCacheOfName = validationFailures;
+        model_internal::_doValidationLastValOfName = value;
 
         return validationFailures;
     }
