@@ -22,12 +22,12 @@
       <annotation name="ActionScriptGeneration">
         <item name="SerializationFilter">com.adobe.serializers.xml.XMLSerializationFilter</item>
         <item name="method">GET</item>
-        <item name="url">assets/products.xml</item>
+        <item name="url">http://flash.musiconegivc.com/planner_db/products.xml</item>
       </annotation>
       <annotation name="url group">
-        <item name="displayUrl">assets/products.xml</item>
-        <item name="completeURL">C:/Users/Глеб/Documents/GitHub/Planner/src/assets/products.xml</item>
-        <item name="isUrl">false</item>
+        <item name="displayUrl">http://flash.musiconegivc.com/planner_db/products.xml</item>
+        <item name="completeURL">http://flash.musiconegivc.com/planner_db/products.xml</item>
+        <item name="isUrl">true</item>
       </annotation>
       <annotation name="Properties">
         <item name="xPath">/::details/::detail</item>
@@ -37,24 +37,6 @@
       </annotation>
     </function>
   </service>
-  <entity name="Detail">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">Detail</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">Products,Dets</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <property name="id" type="string" required="true"/>
-    <property name="name" type="string" required="true"/>
-    <property name="price" type="string" required="true"/>
-    <property name="detail" type="string" required="true"/>
-  </entity>
   <service name="Products">
     <annotation name="ActionScriptGeneration">
       <item name="ServiceType">HTTPMultiService</item>
@@ -74,12 +56,12 @@
       <annotation name="ActionScriptGeneration">
         <item name="SerializationFilter">com.adobe.serializers.xml.XMLSerializationFilter</item>
         <item name="method">GET</item>
-        <item name="url">assets/products.xml</item>
+        <item name="url">http://flash.musiconegivc.com/planner_db/products.xml</item>
       </annotation>
       <annotation name="url group">
-        <item name="displayUrl">assets/products.xml</item>
-        <item name="completeURL">C:/Users/Глеб/Documents/GitHub/Planner/src/assets/products.xml</item>
-        <item name="isUrl">false</item>
+        <item name="displayUrl">http://flash.musiconegivc.com/planner_db/products.xml</item>
+        <item name="completeURL">http://flash.musiconegivc.com/planner_db/products.xml</item>
+        <item name="isUrl">true</item>
       </annotation>
       <annotation name="Properties">
         <item name="xPath">/::products/::product</item>
@@ -89,24 +71,6 @@
       </annotation>
     </function>
   </service>
-  <entity name="Product">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">Product</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">Products</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <property name="id" type="string" required="true"/>
-    <property name="name" type="string" required="true"/>
-    <property name="price" type="string" required="true"/>
-    <property name="product" type="string" required="true"/>
-  </entity>
   <service name="TemplatesService">
     <annotation name="ActionScriptGeneration">
       <item name="ServiceType">HTTPMultiService</item>
@@ -144,6 +108,24 @@
       </annotation>
     </function>
   </service>
+  <entity name="Detail">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Detail</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">TemplatesService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="name" type="string" required="true"/>
+    <property name="price" type="string" required="true"/>
+    <property name="detail" type="string" required="true"/>
+    <property name="id" type="string" required="true"/>
+  </entity>
   <entity name="Product_id">
     <annotation name="EntityProperties">
       <item name="EntityOriginalName">Product_id</item>
@@ -178,5 +160,88 @@
     <property name="id" type="string" required="true"/>
     <property name="name" type="string" required="true"/>
     <property name="product_id" type="Product_id[]" required="true"/>
+  </entity>
+  <entity name="Product">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Product</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Products,TemplatesService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="string" required="true"/>
+    <property name="name" type="string" required="true"/>
+    <property name="price" type="string" required="true"/>
+    <property name="product" type="string" required="true"/>
+  </entity>
+  <entity name="Details">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Details</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">TemplatesService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="details" type="string" required="true"/>
+    <property name="detail" type="Detail[]" required="true"/>
+  </entity>
+  <entity name="Root">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Root</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">TemplatesService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="details" type="Details" required="true"/>
+    <property name="templates" type="Templates" required="true"/>
+    <property name="products" type="TemplatesService_Products"/>
+  </entity>
+  <entity name="TemplatesService_Products">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Products</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">TemplatesService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="products" type="string" required="true"/>
+    <property name="product" type="Product[]" required="true"/>
+  </entity>
+  <entity name="Templates">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Templates</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">TemplatesService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="templates" type="string" required="true"/>
+    <property name="template" type="Template[]" required="true"/>
   </entity>
 </model>

@@ -29,7 +29,7 @@ internal class _Super_Products extends com.adobe.fiber.services.wrapper.HTTPServ
          var argsArray:Array;
 
          operation = new mx.rpc.http.Operation(null, "getData");
-         operation.url = "assets/products.xml";
+         operation.url = "http://flash.musiconegivc.com/planner_db/products.xml";
          operation.method = "GET";
          operation.serializationFilter = serializer0;
          operation.properties = new Object();

@@ -10,7 +10,7 @@
 		]]>
 	</fx:Script>
 	<s:HGroup height="24" verticalAlign="middle" paddingBottom="4" paddingLeft="4" paddingRight="4" paddingTop="4" gap="8">
-		<s:Image source="{'assets/template_' + Template(data).id + '.png'}"/>
+		<s:Image source="{'http://flash.musiconegivc.com/planner_db/template_' + Template(data).id + '.png'}"/>
 		<s:Label text="{Template(data).name}"/>	
 	</s:HGroup>
 	

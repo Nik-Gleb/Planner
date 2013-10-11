@@ -1,6 +1,6 @@
 /**
  * This is a generated class and is not intended for modification.  To customize behavior
- * of this value object you may modify the generated sub-class of this class - Detail.as.
+ * of this value object you may modify the generated sub-class of this class - Details.as.
  */
 
 package valueObjects
@@ -12,8 +12,10 @@ import flash.events.Event;
 import flash.events.EventDispatcher;
 import mx.binding.utils.ChangeWatcher;
 import mx.collections.ArrayCollection;
+import mx.events.CollectionEvent;
 import mx.events.PropertyChangeEvent;
 import mx.validators.ValidationResult;
+import valueObjects.Detail;
 
 import flash.net.registerClassAlias;
 import flash.net.getClassByAlias;
@@ -24,7 +26,7 @@ import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 use namespace model_internal;
 
 [ExcludeClass]
-public class _Super_Detail extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
+public class _Super_Details extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void
     {
@@ -32,9 +34,10 @@ public class _Super_Detail extends flash.events.EventDispatcher implements com.a
 
     model_internal static function initRemoteClassAliasAllRelated() : void
     {
+        valueObjects.Detail.initRemoteClassAliasSingleChild();
     }
 
-    model_internal var _dminternal_model : _DetailEntityMetadata;
+    model_internal var _dminternal_model : _DetailsEntityMetadata;
     model_internal var _changedObjects:mx.collections.ArrayCollection = new ArrayCollection();
 
     public function getChangedObjects() : Array
@@ -51,10 +54,9 @@ public class _Super_Detail extends flash.events.EventDispatcher implements com.a
     /**
      * properties
      */
-    private var _internal_name : String;
-    private var _internal_price : String;
-    private var _internal_detail : String;
-    private var _internal_id : String;
+    private var _internal_details : String;
+    private var _internal_detail : ArrayCollection;
+    model_internal var _internal_detail_leaf:valueObjects.Detail;
 
     private static var emptyArray:Array = new Array();
 
@@ -66,15 +68,13 @@ public class _Super_Detail extends flash.events.EventDispatcher implements com.a
 
     model_internal var _changeWatcherArray:Array = new Array();
 
-    public function _Super_Detail()
+    public function _Super_Details()
     {
-        _model = new _DetailEntityMetadata(this);
+        _model = new _DetailsEntityMetadata(this);
 
         // Bind to own data or source properties for cache invalidation triggering
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "name", model_internal::setterListenerName));
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "price", model_internal::setterListenerPrice));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "details", model_internal::setterListenerDetails));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "detail", model_internal::setterListenerDetail));
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "id", model_internal::setterListenerId));
 
     }
 
@@ -83,27 +83,15 @@ public class _Super_Detail extends flash.events.EventDispatcher implements com.a
      */
 
     [Bindable(event="propertyChange")]
-    public function get name() : String
+    public function get details() : String
     {
-        return _internal_name;
+        return _internal_details;
     }
 
     [Bindable(event="propertyChange")]
-    public function get price() : String
-    {
-        return _internal_price;
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get detail() : String
+    public function get detail() : ArrayCollection
     {
         return _internal_detail;
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get id() : String
-    {
-        return _internal_id;
     }
 
     public function clearAssociations() : void
@@ -114,43 +102,38 @@ public class _Super_Detail extends flash.events.EventDispatcher implements com.a
      * data/source property setters
      */
 
-    public function set name(value:String) : void
+    public function set details(value:String) : void
     {
-        var oldValue:String = _internal_name;
+        var oldValue:String = _internal_details;
         if (oldValue !== value)
         {
-            _internal_name = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "name", oldValue, _internal_name));
+            _internal_details = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "details", oldValue, _internal_details));
         }
     }
 
-    public function set price(value:String) : void
+    public function set detail(value:*) : void
     {
-        var oldValue:String = _internal_price;
+        var oldValue:ArrayCollection = _internal_detail;
         if (oldValue !== value)
         {
-            _internal_price = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "price", oldValue, _internal_price));
-        }
-    }
-
-    public function set detail(value:String) : void
-    {
-        var oldValue:String = _internal_detail;
-        if (oldValue !== value)
-        {
-            _internal_detail = value;
+            if (value is ArrayCollection)
+            {
+                _internal_detail = value;
+            }
+            else if (value is Array)
+            {
+                _internal_detail = new ArrayCollection(value);
+            }
+            else if (value == null)
+            {
+                _internal_detail = null;
+            }
+            else
+            {
+                throw new Error("value of detail must be a collection");
+            }
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "detail", oldValue, _internal_detail));
-        }
-    }
-
-    public function set id(value:String) : void
-    {
-        var oldValue:String = _internal_id;
-        if (oldValue !== value)
-        {
-            _internal_id = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "id", oldValue, _internal_id));
         }
     }
 
@@ -166,24 +149,21 @@ public class _Super_Detail extends flash.events.EventDispatcher implements com.a
      *  - the validity of the property (and the containing entity) if the given data property is required.
      */
 
-    model_internal function setterListenerName(value:flash.events.Event):void
+    model_internal function setterListenerDetails(value:flash.events.Event):void
     {
-        _model.invalidateDependentOnName();
-    }
-
-    model_internal function setterListenerPrice(value:flash.events.Event):void
-    {
-        _model.invalidateDependentOnPrice();
+        _model.invalidateDependentOnDetails();
     }
 
     model_internal function setterListenerDetail(value:flash.events.Event):void
     {
+        if (value is mx.events.PropertyChangeEvent)
+        {
+            if (mx.events.PropertyChangeEvent(value).newValue)
+            {
+                mx.events.PropertyChangeEvent(value).newValue.addEventListener(mx.events.CollectionEvent.COLLECTION_CHANGE, model_internal::setterListenerDetail);
+            }
+        }
         _model.invalidateDependentOnDetail();
-    }
-
-    model_internal function setterListenerId(value:flash.events.Event):void
-    {
-        _model.invalidateDependentOnId();
     }
 
 
@@ -207,25 +187,15 @@ public class _Super_Detail extends flash.events.EventDispatcher implements com.a
         var validationFailureMessages:Array = new Array();
 
         var propertyValidity:Boolean = true;
-        if (!_model.nameIsValid)
+        if (!_model.detailsIsValid)
         {
             propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_nameValidationFailureMessages);
-        }
-        if (!_model.priceIsValid)
-        {
-            propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_priceValidationFailureMessages);
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_detailsValidationFailureMessages);
         }
         if (!_model.detailIsValid)
         {
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_detailValidationFailureMessages);
-        }
-        if (!_model.idIsValid)
-        {
-            propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_idValidationFailureMessages);
         }
 
         model_internal::_cacheInitialized_isValid = true;
@@ -254,14 +224,14 @@ public class _Super_Detail extends flash.events.EventDispatcher implements com.a
 
     [Transient]
     [Bindable(event="propertyChange")]
-    public function get _model() : _DetailEntityMetadata
+    public function get _model() : _DetailsEntityMetadata
     {
         return model_internal::_dminternal_model;
     }
 
-    public function set _model(value : _DetailEntityMetadata) : void
+    public function set _model(value : _DetailsEntityMetadata) : void
     {
-        var oldValue : _DetailEntityMetadata = model_internal::_dminternal_model;
+        var oldValue : _DetailsEntityMetadata = model_internal::_dminternal_model;
         if (oldValue !== value)
         {
             model_internal::_dminternal_model = value;
@@ -306,66 +276,39 @@ public class _Super_Detail extends flash.events.EventDispatcher implements com.a
         }
     }
 
-    model_internal var _doValidationCacheOfName : Array = null;
-    model_internal var _doValidationLastValOfName : String;
+    model_internal var _doValidationCacheOfDetails : Array = null;
+    model_internal var _doValidationLastValOfDetails : String;
 
-    model_internal function _doValidationForName(valueIn:Object):Array
+    model_internal function _doValidationForDetails(valueIn:Object):Array
     {
         var value : String = valueIn as String;
 
-        if (model_internal::_doValidationCacheOfName != null && model_internal::_doValidationLastValOfName == value)
-           return model_internal::_doValidationCacheOfName ;
+        if (model_internal::_doValidationCacheOfDetails != null && model_internal::_doValidationLastValOfDetails == value)
+           return model_internal::_doValidationCacheOfDetails ;
 
-        _model.model_internal::_nameIsValidCacheInitialized = true;
+        _model.model_internal::_detailsIsValidCacheInitialized = true;
         var validationFailures:Array = new Array();
         var errorMessage:String;
         var failure:Boolean;
 
         var valRes:ValidationResult;
-        if (_model.isNameAvailable && _internal_name == null)
+        if (_model.isDetailsAvailable && _internal_details == null)
         {
-            validationFailures.push(new ValidationResult(true, "", "", "name is required"));
+            validationFailures.push(new ValidationResult(true, "", "", "details is required"));
         }
 
-        model_internal::_doValidationCacheOfName = validationFailures;
-        model_internal::_doValidationLastValOfName = value;
-
-        return validationFailures;
-    }
-    
-    model_internal var _doValidationCacheOfPrice : Array = null;
-    model_internal var _doValidationLastValOfPrice : String;
-
-    model_internal function _doValidationForPrice(valueIn:Object):Array
-    {
-        var value : String = valueIn as String;
-
-        if (model_internal::_doValidationCacheOfPrice != null && model_internal::_doValidationLastValOfPrice == value)
-           return model_internal::_doValidationCacheOfPrice ;
-
-        _model.model_internal::_priceIsValidCacheInitialized = true;
-        var validationFailures:Array = new Array();
-        var errorMessage:String;
-        var failure:Boolean;
-
-        var valRes:ValidationResult;
-        if (_model.isPriceAvailable && _internal_price == null)
-        {
-            validationFailures.push(new ValidationResult(true, "", "", "price is required"));
-        }
-
-        model_internal::_doValidationCacheOfPrice = validationFailures;
-        model_internal::_doValidationLastValOfPrice = value;
+        model_internal::_doValidationCacheOfDetails = validationFailures;
+        model_internal::_doValidationLastValOfDetails = value;
 
         return validationFailures;
     }
     
     model_internal var _doValidationCacheOfDetail : Array = null;
-    model_internal var _doValidationLastValOfDetail : String;
+    model_internal var _doValidationLastValOfDetail : ArrayCollection;
 
     model_internal function _doValidationForDetail(valueIn:Object):Array
     {
-        var value : String = valueIn as String;
+        var value : ArrayCollection = valueIn as ArrayCollection;
 
         if (model_internal::_doValidationCacheOfDetail != null && model_internal::_doValidationLastValOfDetail == value)
            return model_internal::_doValidationCacheOfDetail ;
@@ -383,33 +326,6 @@ public class _Super_Detail extends flash.events.EventDispatcher implements com.a
 
         model_internal::_doValidationCacheOfDetail = validationFailures;
         model_internal::_doValidationLastValOfDetail = value;
-
-        return validationFailures;
-    }
-    
-    model_internal var _doValidationCacheOfId : Array = null;
-    model_internal var _doValidationLastValOfId : String;
-
-    model_internal function _doValidationForId(valueIn:Object):Array
-    {
-        var value : String = valueIn as String;
-
-        if (model_internal::_doValidationCacheOfId != null && model_internal::_doValidationLastValOfId == value)
-           return model_internal::_doValidationCacheOfId ;
-
-        _model.model_internal::_idIsValidCacheInitialized = true;
-        var validationFailures:Array = new Array();
-        var errorMessage:String;
-        var failure:Boolean;
-
-        var valRes:ValidationResult;
-        if (_model.isIdAvailable && _internal_id == null)
-        {
-            validationFailures.push(new ValidationResult(true, "", "", "id is required"));
-        }
-
-        model_internal::_doValidationCacheOfId = validationFailures;
-        model_internal::_doValidationLastValOfId = value;
 
         return validationFailures;
     }

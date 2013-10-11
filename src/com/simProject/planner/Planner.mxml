@@ -6,10 +6,31 @@
 			   xmlns:dets="services.dets.*"
 			   xmlns:templates="services.templates.*"
 			   minWidth="640" minHeight="480"
-			   applicationComplete="{PlannerAPI.initialize()}"
-			   pageTitle="Planner" viewSourceURL="srcview/index.html">
+			   
+			   currentState="splash" pageTitle="Planner"
+			   viewSourceURL="srcview/index.html"
+			   backgroundColor.splash="#606080">
 	<fx:Script>
+		<![CDATA[
+			/**
+			 * Обработчик клика по splash-скрину.
+			 * Переводит приложение в состояние "setupShelfSize".
+			 */ 
+			public var splashClickHandler:Function = function():void
+			{
+				currentState = "setup";
+			};
+		]]>
 	</fx:Script>
+	<s:states>
+		<s:State name="splash"
+				 enterState="{this.addEventListener(MouseEvent.CLICK,splashClickHandler);}"
+				 exitState="{this.removeEventListener(MouseEvent.CLICK,splashClickHandler);}"/>
+		<s:State name="setup"/>
+		<s:State name="designer" enterState.designer="{PlannerAPI.initialize()}" />
+		<s:State name="report"/>
+	</s:states>
+
 	<fx:Declarations>
 		<products:Products id="products"
 						   showBusyCursor="true"/>		
@@ -18,44 +39,64 @@
 		<templates:TemplatesService id="templatesService"
 									showBusyCursor="true"/>
 	</fx:Declarations>
-	<s:controlBarContent>
-		<s:HGroup id="titlePanel" width="163" height="25"
-				  horizontalAlign="center" verticalAlign="middle">
-			<s:Button id="backButton" label="Назад"
-					  click="PlannerAPI.onBackButtonClick()" enabled="false"/>
-			<s:Button id="forwardButton"
-					  label="Вперёд"
-					  click="PlannerAPI.onForwardButtonClick()"/>
-		</s:HGroup>
-	</s:controlBarContent>
-	<s:Panel id="shelf_sizes_panel" visible="false" width="620" height="419" horizontalCenter="0"
-			 title="Настройка размера полки" verticalCenter="0">
-	</s:Panel>
-	<s:Panel id="constructor_panel" visible="true" width="620" height="419"
-			 horizontalCenter="0" title="Конструктор стенки" verticalCenter="0">
+	<s:Label id="appNameLabel" includeIn="splash" color="#002040"
+			 fontFamily="Georgia" fontSize="36" fontWeight="bold"
+			 horizontalCenter="0" text="Wardrobe Planner®" textAlign="center"
+			 verticalAlign="middle" verticalCenter="0"/>
+	<s:Label id="compNameLabel" includeIn="splash" right="10" color="#004020"
+			 fontFamily="Courier New" fontSize="24" fontWeight="bold"
+			 text="by Sim Project© inc." textAlign="center"
+			 verticalAlign="middle" verticalCenter="219"/>
+	<s:Label includeIn="designer,report,setup" y="10" color="#336699"
+			 fontFamily="Courier New" fontSize="24" horizontalCenter="0"
+			 verticalAlign="middle"
+			 text.setup="Укажите размер списка" textAlign="center"
+			 text.designer="Соберите необходимую конфигурацию"
+			 text.report="Отчёт"/>
+	<s:HSlider includeIn="setup" width="296" horizontalCenter="0"
+			   liveDragging="true" maximum="10.0" verticalCenter="0"/>
+	<s:HGroup id="titlePanel1" includeIn="designer,report,setup" right="10" bottom="10"
+			  width="163" height="29" horizontalAlign="center"
+			  verticalAlign="middle">
+		<s:Button id="backButton1" label="Назад"
+				  visible.setup="false"
+				  visible.designer="true"
+				  visible.report="true"
+				  click.designer="{currentState='setup'}"
+				  click.report="{currentState='designer'}"/>
+		<s:Button id="forwardButton1"
+				  label="Вперёд"
+				  visible.setup="true"
+				  visible.designer="true"
+				  visible.report="false"
+				  click.designer="{currentState='report'}"
+				  click.setup="{currentState='designer'}"/>
+	</s:HGroup>
+	<s:Group includeIn="designer" width="626" height="252" horizontalCenter="0"
+			 verticalCenter="-60">
 		<s:List id="productsList" x="10" y="10" width="156" height="110"
 				change="{PlannerAPI.onProductsListChanged()}"
 				itemRenderer="com.simProject.planner.ProductItemListRenderer"
-				labelField="name" verticalScrollPolicy="auto">
+				labelField="name" verticalScrollPolicy="auto"
+				x.designer="44" y.designer="89">
 		</s:List>
 		<s:List id="templatesList" x="10" y="130" width="157" height="110"
 				change="{PlannerAPI.onTemplatesListChanged()}"
 				itemRenderer="com.simProject.planner.TemplateItemListRenderer"
-				labelField="name" verticalScrollPolicy="auto">
+				labelField="name" verticalScrollPolicy="auto"
+				x.designer="44" y.designer="209">
 		</s:List>
-		<s:RichText id="productInfo" x="174" y="10" width="267" height="110"/>
-		<s:RichText id="templateInfo" x="174" y="128" width="267" height="112"/>
+		<s:RichText id="productInfo" x="174" y="10" width="267" height="110"
+					x.designer="208" y.designer="89"/>
+		<s:RichText id="templateInfo" x="174" y="128" width="267" height="112"
+					x.designer="208" y.designer="207"/>
 		<s:List id="resultList" x="449" y="10" width="159" height="230"
+				dataProvider="{PlannerAPI.resultProducts}" dragEnabled="true"
+				dragMoveEnabled="true" dropEnabled="true"
 				itemRenderer="com.simProject.planner.ResultItemListRenderer"
-				dataProvider="{PlannerAPI.resultProducts}"
-				dragMoveEnabled="true"
-				dragEnabled="true"
-				dropEnabled="true"
-				labelField="id">
+				labelField="id"
+				x.designer="483" y.designer="89">
 		</s:List>
-	</s:Panel>
-	<s:Panel id="report_panel" visible="false" width="620" height="419"
-			 horizontalCenter="0" title="Отчёт" verticalCenter="0">
-	</s:Panel>
+	</s:Group>
 </s:Application>
 

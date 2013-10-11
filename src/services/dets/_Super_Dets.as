@@ -29,7 +29,7 @@ internal class _Super_Dets extends com.adobe.fiber.services.wrapper.HTTPServiceW
          var argsArray:Array;
 
          operation = new mx.rpc.http.Operation(null, "getData");
-         operation.url = "assets/products.xml";
+         operation.url = "http://flash.musiconegivc.com/planner_db/products.xml";
          operation.method = "GET";
          operation.serializationFilter = serializer0;
          operation.properties = new Object();

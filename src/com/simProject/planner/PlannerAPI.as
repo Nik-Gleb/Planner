@@ -20,6 +20,7 @@ package com.simProject.planner
 	import mx.controls.List;
 	import mx.core.Application;
 	import mx.core.FlexGlobals;
+	import mx.events.CollectionEvent;
 	import mx.rpc.CallResponder;
 	import mx.rpc.events.ResultEvent;
 	import mx.utils.ArrayUtil;
@@ -84,6 +85,7 @@ package com.simProject.planner
 		public static function initialize():void
 		{
 			trace("PlannerAPI.initialize()");
+			
 			getData();
 			
 		}
@@ -93,28 +95,8 @@ package com.simProject.planner
 		 */ 
 		public static function onForwardButtonClick():void
 		{
-			
-			switch(currentScreen)
-			{
-				case PlannerScreen.SHELF_SIZES:
-				{
-					onShelfSizesComplete();
-					break;
-				}
-				
-				case PlannerScreen.CONSTRUCTOR:
-				{
-					onConstructorComplete();
-					break;
-				}
-				
-				default:
-				{
-					throw new Error("Рыба схавала вертолёт.");
-					break;
-				}
-			}
-			
+			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			planner.currentState = "designer";
 		}
 		
 		/**
@@ -138,69 +120,14 @@ package com.simProject.planner
 		 */ 
 		public static function onProductsListDoubleClick(data:Object):void
 		{
-			invalidateDetails();
+			var product:Product = Product(data);
+			var list:ArrayList = new ArrayList();			
 			
-			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
-			var index:int = planner.resultList.selectedIndex<1?0:planner.resultList.selectedIndex;
-			resultProducts.addItemAt(data,index);
-			planner.resultList.selectedIndex = index;
+			list.addItem(product);
 			
-			
+			addShelfs(list);
 		}
 		
-		private static function invalidateDetails():void
-		{
-			if(resultProducts.length == 0){
-				var product:Product = new Product();
-				var detail:Detail = details[0];
-				product.id = detail.id;
-				product.name = detail.name;
-				product.price = detail.price;
-				resultProducts.addItem(product);
-			}else{
-				var hasProducts:Boolean = false;
-				for (var i:int = 0; i < resultProducts.length; i++) 
-				{
-					if(uint(Product(resultProducts[i]).id)<16){
-						hasProducts = true;
-						break;
-					}
-				}
-				
-				if(!hasProducts){
-					resultProducts.removeAll();
-					return;
-				}
-				
-				var detail25:int = -1;
-				for (var j:int = 0; j < resultProducts.length; j++) 
-				{
-					if(uint(Product(resultProducts[j]).id)==25){
-						detail25 = j;
-						break;
-					}
-				}
-				
-				
-				if(detail25>-1){
-					if(resultProducts.length<10)resultProducts.removeItemAt(detail25);
-				}else{
-					if(resultProducts.length>9){
-						var product:Product = new Product();
-						var detail:Detail = details[9];
-						product.id = detail.id;
-						product.name = detail.name;
-						product.price = detail.price;
-						resultProducts.addItem(product);
-
-					}
-				}
-
-				
-			}
-			
-			
-		}
 		
 		/**
 		 * Метод вызывается при выборе пункта в списке шаблонов.
@@ -232,17 +159,16 @@ package com.simProject.planner
 		{
 			var template:Template = Template(data);
 			var list:ArrayList = new ArrayList();
+			
 			for (var i:int = 0; i < template.product_id.length; i++) 
 			{
 				var product:Product = products[uint(Product_id(template.product_id[i]).id)];
 				list.addItem(product);
 			}
 			
-			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
-			var index:int = planner.resultList.selectedIndex<1?0:planner.resultList.selectedIndex;
-			resultProducts.addAllAt(list,index);
-			planner.resultList.selectedIndex = index;
-
+			
+			addShelfs(list);
+			
 		}
 
 		/**
@@ -250,39 +176,10 @@ package com.simProject.planner
 		 */ 
 		public static function onResultsListDoubleClick(data:Object):void
 		{
+			var index:int = resultProducts.getItemIndex(data);
 			if(uint(Product(data).id)>15)return;
-			resultProducts.removeItemAt(resultProducts.getItemIndex(data));
-			invalidateDetails();
-		}
-
-		
-		/**
-		 * Метод вызывается при клике по кнопке "BackButton".
-		 */ 
-		public static function onBackButtonClick():void
-		{
-			switch(currentScreen)
-			{
-					
-				case PlannerScreen.CONSTRUCTOR:
-				{
-					onConstructorCancel();
-					break;
-				}
-					
-				case PlannerScreen.REPORT:
-				{
-					onReportCancel();					
-					break;
-				}
-					
-				default:
-				{
-					throw new Error("Рыба схавала вертолёт.");
-					break;
-				}
-			}
-
+			if(index != -1)removeShelf(index);
+			
 		}
 		
 		/**
@@ -343,113 +240,94 @@ package com.simProject.planner
 
 		}
 		
-		/**
-		 * Вызывается, когда размер полки установлен.
-		 */
-		private static function onShelfSizesComplete():void
-		{
-			currentScreen = PlannerScreen.CONSTRUCTOR;
-			
-			var button:Button = Button(FlexGlobals.topLevelApplication["backButton"]);
-			if(button != null){
-				button.enabled = true;
-			}else{
-				throw new Error("Рыба схавала вертолёт.");
-			}
-			
-			var shelf_sizes_panel:Panel = Panel(FlexGlobals.topLevelApplication["shelf_sizes_panel"]);
-			var constructor_panel:Panel = Panel(FlexGlobals.topLevelApplication["constructor_panel"]);
-			if(shelf_sizes_panel != null && constructor_panel != null){
-				shelf_sizes_panel.visible = false;
-				constructor_panel.visible = true;
-			}else{
-				throw new Error("Рыба схавала вертолёт.");
-			}
-
-		}
 		
 		/**
-		 * Вызывается, когда стенка собрана.
-		 */
-		private static function onConstructorComplete():void
+		 * Добавляет полки в конечный список.
+		 */ 
+		private static function addShelfs(value:ArrayList):void
 		{
-			currentScreen = PlannerScreen.REPORT;
-
-			var button:Button = Button(FlexGlobals.topLevelApplication["forwardButton"]);
-			if(button != null){
-				button.enabled = false;
-			}else{
-				throw new Error("Рыба схавала вертолёт.");
-			}
+			if(value == null)return;
+			if(value.length == 0)return;
 			
-			var constructor_panel:Panel = Panel(FlexGlobals.topLevelApplication["constructor_panel"]);
-			var report_panel:Panel = Panel(FlexGlobals.topLevelApplication["report_panel"]);
-			if(constructor_panel != null && report_panel != null){
-				constructor_panel.visible = false;
-				report_panel.visible = true;
-			}else{
-				throw new Error("Рыба схавала вертолёт.");
+			var st_details:ArrayList = new ArrayList();
+			var st_products:ArrayList = new ArrayList();
+			
+			for (var i:int = 0; i < resultProducts.length; i++) 
+			{
+				var product:Product = Product(resultProducts[i]);
+				
+				if(uint(product.id)>15)
+					st_details.addItem(product);
+				else
+					st_products.addItem(product);
 			}
-
 			
 			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
-			//planner.getData();
+			var index:int = resultProducts.length;
+			
+			if(st_products.length == 0){
+				resultProducts.addItem(createDetailAsProduct(0));
+				resultProducts.addItem(createDetailAsProduct(1));
+				index = 1;
+			}else{
+				index--;
+			}
+								
+			
+			if(value.length == 1){
+				// Добавляется один элемент
+				resultProducts.addItemAt(value.source.pop(),index);
+			}else{
+				// Добавляется несколько элементов
+				resultProducts.addAllAt(value,index);
+			}
 			
 		}
 		
 		/**
-		 * Вызывается, когда пользователь вернулся назад из конструктора.
-		 */
-		private static function onConstructorCancel():void
+		 * Удалет полку из списка.
+		 */ 
+		private static function removeShelf(index:uint):void
 		{
-			currentScreen = PlannerScreen.SHELF_SIZES;
+			if(index>resultProducts.length-1)return;
+			if(uint(Product(resultProducts[index]).id)>15)return;
 			
-			var button:Button = Button(FlexGlobals.topLevelApplication["backButton"]);
-			if(button != null){
-				button.enabled = false;
-			}else{
-				throw new Error("Рыба схавала вертолёт.");
+			var st_details:ArrayList = new ArrayList();
+			var st_products:ArrayList = new ArrayList();
+			
+			for (var i:int = 0; i < resultProducts.length; i++) 
+			{
+				var product:Product = Product(resultProducts[i]);
+				
+				if(uint(product.id)>15)
+					st_details.addItem(product);
+				else
+					st_products.addItem(product);
 			}
 			
-			var constructor_panel:Panel = Panel(FlexGlobals.topLevelApplication["constructor_panel"]);
-			var shelf_sizes_panel:Panel = Panel(FlexGlobals.topLevelApplication["shelf_sizes_panel"]);
-			if(constructor_panel != null && shelf_sizes_panel != null){
-				constructor_panel.visible = false;
-				shelf_sizes_panel.visible = true;
-			}else{
-				throw new Error("Рыба схавала вертолёт.");
-			}
+			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			var temp_index:int = resultProducts.length;
+			
+			if(st_products.length == 1)
+				resultProducts.removeAll();
+			else
+				resultProducts.removeItemAt(index);
 
-			
 			
 		}
-
+		
 		/**
-		 * Вызывается, когда пользователь вернулся назад из отчета.
-		 */
-		private static function onReportCancel():void
+		 * Создаёт продукт по детали.
+		 **/ 
+		private static function createDetailAsProduct(index:uint):Product
 		{
-			currentScreen = PlannerScreen.CONSTRUCTOR;
-			
-			var button:Button = Button(FlexGlobals.topLevelApplication["forwardButton"]);
-			if(button != null){
-				button.enabled = true;
-			}else{
-				throw new Error("Рыба схавала вертолёт.");
-			}
-			
-			var report_panel:Panel = Panel(FlexGlobals.topLevelApplication["report_panel"]);
-			var constructor_panel:Panel = Panel(FlexGlobals.topLevelApplication["constructor_panel"]);
-			
-			if(report_panel != null && constructor_panel != null){
-				report_panel.visible = false;
-				constructor_panel.visible = true;
-			}else{
-				throw new Error("Рыба схавала вертолёт.");
-			}
-			
+			var product:Product = new Product();
+			var detail:Detail = details[index];
+			product.id = detail.id;
+			product.name = detail.name;
+			product.price = detail.price;
+			return product;
 		}
-
 
 	}
 }
