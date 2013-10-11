@@ -10,17 +10,20 @@
  **/
 package com.simProject.planner
 {
-	import com.simProject.planner.core.PlannerScreen;
 	
+	import flash.display.IBitmapDrawable;
 	import flash.events.MouseEvent;
+	import flash.utils.ByteArray;
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.collections.IList;
-	import mx.controls.List;
 	import mx.core.Application;
 	import mx.core.FlexGlobals;
 	import mx.events.CollectionEvent;
+	import mx.graphics.ImageSnapshot;
+	import mx.printing.FlexPrintJob;
+	import mx.printing.FlexPrintJobScaleType;
 	import mx.rpc.CallResponder;
 	import mx.rpc.events.ResultEvent;
 	import mx.utils.ArrayUtil;
@@ -28,7 +31,10 @@ package com.simProject.planner
 	import services.dets.Dets;
 	import services.products.Products;
 	
+	import spark.collections.Sort;
+	import spark.collections.SortField;
 	import spark.components.Button;
+	import spark.components.List;
 	import spark.components.Panel;
 	
 	import valueObjects.Detail;
@@ -43,7 +49,7 @@ package com.simProject.planner
 	 * 
 	 * @author Gleb Nikitenko
 	 **/
-	internal final class PlannerAPI
+	public final class PlannerAPI
 	{
 		/** Информация о верссии. */
 		include "Version.as";
@@ -64,11 +70,11 @@ package com.simProject.planner
 		private static var templates:Vector.<Template> = null;
 
 		
-		/** Текущий экран приложения. */
-		private static var currentScreen:String = PlannerScreen.SHELF_SIZES;
-		
 		/** Конечный список товаров для отчёта. */ 
 		public static var resultProducts:ArrayCollection = new ArrayCollection();
+		
+		/** Конечный список товаров для таблицы. */ 
+		public static var resultTable:ArrayCollection = new ArrayCollection();
 		
 		/**
 		 * Конструктор.
@@ -183,9 +189,136 @@ package com.simProject.planner
 		}
 		
 		/**
+		 * Вызывается, когда состояние приложения изменилось на "report".
+		 */ 
+		public static function onChangeStateToReport():void
+		{
+			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			var source:IBitmapDrawable = planner.resultList;
+			var imageSnap:ImageSnapshot = ImageSnapshot.captureImage(source);
+			var imageByteArray:ByteArray = imageSnap.data as ByteArray;
+			
+			planner.screenShot.load(imageByteArray);
+			
+			resultTable.removeAll();
+			
+			var tempCollection:ArrayCollection = new ArrayCollection();
+			for (var k:int = 0; k < resultProducts.length; k++) 
+			{
+				var product:Product = new Product();
+				product.id = Product(resultProducts[k]).id;
+				product.name = Product(resultProducts[k]).name;
+				product.price = Product(resultProducts[k]).price;
+				tempCollection.addItem(product);
+			}
+			
+			var dataSortField:SortField = new SortField();
+			dataSortField.name = "id";
+			dataSortField.numeric = true;
+			var numericDataSort:Sort = new Sort();
+			numericDataSort.fields = [dataSortField];
+			tempCollection.sort = numericDataSort;
+			tempCollection.refresh();
+			
+			
+			var oldID:int = -1;
+			var totalSum:uint = 0;
+			
+			for (var i3:int = 0; i3 < tempCollection.length; i3++) 
+			{
+				var product:Product = Product(tempCollection[i3]);
+				var id:int = int(product.id);
+				if(id!=oldID){
+					trace("add " + id);
+					var resultItem:ResultItem = new ResultItem();
+					resultItem.id = uint(product.id);
+					resultItem.name = product.name;
+					resultItem.price = uint(product.price);
+					resultItem.sum = resultItem.price;
+					resultTable.addItem(resultItem);
+
+				}else{
+					var resultItem:ResultItem = resultTable[resultTable.length-1];
+					resultItem.count++;
+					resultItem.sum += resultItem.price;
+				}
+				totalSum+=resultItem.sum;
+				oldID = id;
+			}
+			
+			planner.reportTotal.text = "Total:    " + totalSum + " rub.";
+			
+			return;
+			for (var i:int = 0; i < resultProducts.length; i++) 
+			{
+				var product:Product = Product(resultProducts[i]);
+				
+				trace(product.id + "; " + i);
+				trace("***");
+				
+				for (var j:int = 0; j < tempCollection.length; j++) 
+				{
+					var product_ext:Product = Product(tempCollection[j]);
+					if(product.id == product_ext.id){
+						trace(j);
+						tempCollection.removeItemAt(j);
+					}
+				}
+				trace("===");
+				
+			}
+			
+			return;
+			while(tempCollection.length>0){
+				var product:Product = Product(tempCollection.removeItemAt(0));
+				var resulItem:ResultItem = new ResultItem();
+				
+				resulItem.id = uint(product.id);
+				resulItem.name = product.name;
+				resulItem.price = uint(product.price);
+				
+				for each (var i:int=1 in tempCollection) 
+				{
+					var product_ext:Product = Product(tempCollection[i]);
+					if(product.id == product_ext.id){
+						resulItem.count++;
+						tempCollection.removeItemAt(i);
+					}
+					
+				}
+				
+				resulItem.sum = resulItem.price * resulItem.count;
+				resultTable.addItem(resulItem);
+
+			}
+			
+			
+		}
+		
+		/**
+		 * Вызывается при клике по кнопке "печать" 
+		 */
+		public static function onPrintClick():void
+		{
+			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			
+			var printJob:FlexPrintJob = new FlexPrintJob();
+			
+			// Start the print job.
+			if (printJob.start() != true) return;
+			
+			// Add the object to print. Do not scale it.
+			printJob.addObject(planner.reportContent, FlexPrintJobScaleType.NONE);
+			
+			// Send the job to the printer.
+			printJob.send();
+			
+		}
+		
+		/**
 		 * Метод получает данные из источника данных.
 		 */ 
-		private static function getData():void
+		public static function getData():void
 		{
 			products = null;
 			details = null;

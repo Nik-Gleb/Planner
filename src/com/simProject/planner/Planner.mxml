@@ -16,7 +16,7 @@
 			 * Обработчик клика по splash-скрину.
 			 * Переводит приложение в состояние "setupShelfSize".
 			 */ 
-			public var splashClickHandler:Function = function():void
+			public var splashClickHandler:Function = function(event:MouseEvent):void
 			{
 				currentState = "setup";
 			};
@@ -28,7 +28,7 @@
 				 exitState="{this.removeEventListener(MouseEvent.CLICK,splashClickHandler);}"/>
 		<s:State name="setup"/>
 		<s:State name="designer" enterState.designer="{PlannerAPI.initialize()}" />
-		<s:State name="report"/>
+		<s:State name="report" enterState="{PlannerAPI.onChangeStateToReport()}"/>
 	</s:states>
 
 	<fx:Declarations>
@@ -38,6 +38,7 @@
 				   showBusyCursor="true"/>
 		<templates:TemplatesService id="templatesService"
 									showBusyCursor="true"/>
+		<mx:Blur id="ID" blurXFrom="0" blurXTo="2" blurYFrom="0" blurYTo="2" duration="400"/>
 	</fx:Declarations>
 	<s:Label id="appNameLabel" includeIn="splash" color="#002040"
 			 fontFamily="Georgia" fontSize="36" fontWeight="bold"
@@ -66,31 +67,36 @@
 				  click.report="{currentState='designer'}"/>
 		<s:Button id="forwardButton1"
 				  label="Вперёд"
+				  label.report="Печать"
 				  visible.setup="true"
 				  visible.designer="true"
-				  visible.report="false"
+				  visible.report="true"
 				  click.designer="{currentState='report'}"
-				  click.setup="{currentState='designer'}"/>
+				  click.setup="{currentState='designer'}"
+				  click.report="{PlannerAPI.onPrintClick()}"/>
 	</s:HGroup>
 	<s:Group includeIn="designer" width="626" height="252" horizontalCenter="0"
 			 verticalCenter="-60">
-		<s:List id="productsList" x="10" y="10" width="156" height="110"
+		<s:List id="productsList" x="12" y="4" width="156" height="110"
+				borderVisible="true"
 				change="{PlannerAPI.onProductsListChanged()}"
+				contentBackgroundColor="#FFFFFF"
 				itemRenderer="com.simProject.planner.ProductItemListRenderer"
 				labelField="name" verticalScrollPolicy="auto"
 				x.designer="44" y.designer="89">
 		</s:List>
-		<s:List id="templatesList" x="10" y="130" width="157" height="110"
+		<s:List id="templatesList" x="12" y="124" width="157" height="110"
 				change="{PlannerAPI.onTemplatesListChanged()}"
 				itemRenderer="com.simProject.planner.TemplateItemListRenderer"
 				labelField="name" verticalScrollPolicy="auto"
 				x.designer="44" y.designer="209">
 		</s:List>
-		<s:RichText id="productInfo" x="174" y="10" width="267" height="110"
+		<s:RichText id="productInfo" x="176" y="4" width="267" height="110"
 					x.designer="208" y.designer="89"/>
-		<s:RichText id="templateInfo" x="174" y="128" width="267" height="112"
+		<s:RichText id="templateInfo" x="176" y="122" width="267" height="112"
 					x.designer="208" y.designer="207"/>
-		<s:List id="resultList" x="449" y="10" width="159" height="230"
+		<s:List id="resultList" x="451" y="4" width="159" height="230"
+				borderVisible="false" contentBackgroundColor="#E0E0E0"
 				dataProvider="{PlannerAPI.resultProducts}" dragEnabled="true"
 				dragMoveEnabled="true" dropEnabled="true"
 				itemRenderer="com.simProject.planner.ResultItemListRenderer"
@@ -98,5 +104,29 @@
 				x.designer="483" y.designer="89">
 		</s:List>
 	</s:Group>
+	<s:BorderContainer id="reportContent" includeIn="report" width="520"
+					   height="408" dropShadowVisible="true"
+					   horizontalCenter="0" verticalCenter="0">
+		<s:layout>
+			<s:VerticalLayout horizontalAlign="contentJustify"/>
+		</s:layout>
+		<s:DataGrid width="515" dataProvider="{PlannerAPI.resultTable}"
+					requestedRowCount="4">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="id" headerText="id" width="32"/>
+					<s:GridColumn dataField="name" headerText="Название"/>
+					<s:GridColumn dataField="price" headerText="Цена, руб"/>
+					<s:GridColumn dataField="count" headerText="Количество, шт"/>
+					<s:GridColumn dataField="sum" headerText="Сумма, руб"/>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:HGroup width="512" height="15" horizontalAlign="right"
+				  verticalAlign="middle">
+			<s:Label id="reportTotal" width="102" height="15"/>
+		</s:HGroup>
+		<s:SWFLoader id="screenShot" creationCompleteEffect="{ID}"/>
+	</s:BorderContainer>
 </s:Application>
 
