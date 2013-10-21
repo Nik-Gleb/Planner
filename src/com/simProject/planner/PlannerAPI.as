@@ -342,6 +342,14 @@ package com.simProject.planner
 		}
 		
 		/**
+		 * Изменено значение слайдера.
+		 */ 
+		public static function onSliderChanged():void
+		{
+			
+		}
+		
+		/**
 		 * Вызывается, когда данные о продуктах получены.
 		 * @param data список продуктов.
 		 */ 

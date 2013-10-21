@@ -19,7 +19,7 @@
 			public var splashClickHandler:Function = function(event:MouseEvent):void
 			{
 				currentState = "setup";
-			};
+			};			
 		]]>
 	</fx:Script>
 	<s:states>
@@ -54,7 +54,9 @@
 			 text.setup="Укажите размер списка" textAlign="center"
 			 text.designer="Соберите необходимую конфигурацию"
 			 text.report="Отчёт"/>
-	<s:HSlider includeIn="setup" width="296" horizontalCenter="0"
+	<s:HSlider includeIn="setup" width="296"
+			   change="{PlannerAPI.onSliderChanged()}"
+			   horizontalCenter="0"
 			   liveDragging="true" maximum="10.0" verticalCenter="0"/>
 	<s:HGroup id="titlePanel1" includeIn="designer,report,setup" right="10" bottom="10"
 			  width="163" height="29" horizontalAlign="center"
