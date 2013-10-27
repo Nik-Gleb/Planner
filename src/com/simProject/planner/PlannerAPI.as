@@ -18,6 +18,7 @@ package com.simProject.planner
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.collections.IList;
+	import mx.controls.Alert;
 	import mx.core.Application;
 	import mx.core.FlexGlobals;
 	import mx.events.CollectionEvent;
@@ -91,7 +92,7 @@ package com.simProject.planner
 		public static function initialize():void
 		{
 			trace("PlannerAPI.initialize()");
-			
+			//Alert.show(FlexGlobals.topLevelApplication.loaderInfo.url,"tittle");
 			getData();
 			
 		}
@@ -338,6 +339,8 @@ package com.simProject.planner
 			productsCallResponder.token = planner.products.getData();
 			detailsCallResponder.token = planner.dets.getData();
 			templatesCallResponder.token = planner.templatesService.getData();
+			
+			
 			
 		}
 		
