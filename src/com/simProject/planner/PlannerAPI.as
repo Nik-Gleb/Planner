@@ -28,10 +28,7 @@ package com.simProject.planner
 	import mx.rpc.CallResponder;
 	import mx.rpc.events.ResultEvent;
 	import mx.utils.ArrayUtil;
-	
-	import services.dets.Dets;
-	import services.products.Products;
-	
+		
 	import spark.collections.Sort;
 	import spark.collections.SortField;
 	import spark.components.Button;
@@ -224,7 +221,7 @@ package com.simProject.planner
 			
 			var oldID:int = -1;
 			var totalSum:uint = 0;
-			
+			/*
 			for (var i3:int = 0; i3 < tempCollection.length; i3++) 
 			{
 				var product:Product = Product(tempCollection[i3]);
@@ -293,7 +290,7 @@ package com.simProject.planner
 
 			}
 			
-			
+			*/
 		}
 		
 		/**
@@ -325,7 +322,7 @@ package com.simProject.planner
 			details = null;
 			templates = null;
 			
-			var planner:Planner = Planner(FlexGlobals.topLevelApplication);
+			/*var planner:Planner = Planner(FlexGlobals.topLevelApplication);
 			
 			planner.products.addEventListener(ResultEvent.RESULT,
 				function(event:ResultEvent):void{onProductsLoaded(event.result)});
@@ -339,7 +336,7 @@ package com.simProject.planner
 			productsCallResponder.token = planner.products.getData();
 			detailsCallResponder.token = planner.dets.getData();
 			templatesCallResponder.token = planner.templatesService.getData();
-			
+			*/
 			
 			
 		}

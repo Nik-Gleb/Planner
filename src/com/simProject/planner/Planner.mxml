@@ -7,11 +7,95 @@
 			   xmlns:templates="services.templates.*"
 			   minWidth="640" minHeight="480"
 			   
-			   currentState="splash" pageTitle="Planner"
+			   currentState="start" pageTitle="Planner"
 			   viewSourceURL="srcview/index.html"
 			   backgroundColor.splash="#606080">
+
 	<fx:Script>
 		<![CDATA[
+			import com.simProject.planner.logic.architecture.Controller;
+			import com.simProject.planner.logic.events.ControllerEvent;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			private var controller:Controller = null;
+			
+			protected var onControllerChangeState:Function = null;
+			
+			protected function mainButtonNotRunning_clickHandler(event:MouseEvent):void
+			{
+				// Создаём функции обратных вызовов
+				this.onControllerChangeState = function(event:ControllerEvent):void
+				{
+					if (event.type == ControllerEvent.STATE_CHANGED)
+						currentState = event.name;
+				};
+				
+				// Создаём контроллёр
+				controller = new Controller();
+				
+				// Связываем функции обратных вызово и события модели
+				controller.addEventListener(ControllerEvent.STATE_CHANGED, onControllerChangeState);	
+				
+				controller.dispatchEvent(
+					new ControllerEvent(
+						ControllerEvent.STATE_CHANGED,
+						controller.currentState.getName())); 
+			}
+			
+			public function dispose():void
+			{
+				if (controller == null) return;
+				
+				// Отвязываем представление от модели
+				controller.removeEventListener(ControllerEvent.STATE_CHANGED, onControllerChangeState);
+				
+				// Уничтожаем функции обратных вызовов
+				onControllerChangeState = null;
+				
+				controller.dispose();
+				controller = null;
+				System.gc();
+				
+				currentState = 'start'
+			}
+			
+			protected function loading_enterStateHandler(event:FlexEvent):void
+			{				
+				trace(controller.model.dataDomain);
+				trace('currentState=' + currentState)
+				controller.addEventListener(ControllerEvent.ERROR_LOADING, onErrorLoading);
+				controller.addEventListener(ProgressEvent.PROGRESS, onProgressLoading);
+			}
+			
+			protected function loading_exitStateHandler(event:FlexEvent):void
+			{
+				if (controller)
+					if (controller.hasEventListener(ControllerEvent.ERROR_LOADING))
+						controller.removeEventListener(ControllerEvent.ERROR_LOADING, onErrorLoading);
+			}
+			
+			private function onProgressLoading(event:ProgressEvent):void
+			{
+				trace(event.bytesLoaded, event.bytesTotal);
+			}
+			
+			private function onErrorLoading(event:ControllerEvent):void
+			{
+				trace("Ошибка загрузки данных");
+				dispose();
+				/*
+				Alert.show(
+				event.name,
+				"Ошибка загрузки данных",
+				Alert.OK,
+				this,
+				function():void{dispose()},
+				null,
+				Alert.OK)*/
+			}
+
 			/**
 			 * Обработчик клика по splash-скрину.
 			 * Переводит приложение в состояние "setupShelfSize".
@@ -23,6 +107,10 @@
 		]]>
 	</fx:Script>
 	<s:states>
+		<s:State name="start" enterState="{trace('currentState=' + currentState)}"/>
+		<s:State name="loading"
+				 enterState="loading_enterStateHandler(event)"/>
+		<s:State name="ready" enterState="{trace('ready' + controller.model.dataDomain)}"/>
 		<s:State name="splash"
 				 enterState="{this.addEventListener(MouseEvent.CLICK,splashClickHandler);}"
 				 exitState="{this.removeEventListener(MouseEvent.CLICK,splashClickHandler);}"/>
@@ -32,14 +120,24 @@
 	</s:states>
 
 	<fx:Declarations>
-		<products:Products id="products"
-						   showBusyCursor="true"/>		
-		<dets:Dets id="dets"
-				   showBusyCursor="true"/>
-		<templates:TemplatesService id="templatesService"
-									showBusyCursor="true"/>
 		<mx:Blur id="ID" blurXFrom="0" blurXTo="2" blurYFrom="0" blurYTo="2" duration="400"/>
 	</fx:Declarations>
+	<s:controlBarContent>
+		<s:HGroup id="mainButton"
+				  verticalAlign="middle">
+			<s:Button
+				label = "Stop"
+				label.start="Start"
+				click.start="mainButtonNotRunning_clickHandler(event)"
+				click="dispose()"/>
+			<s:Label id="totalMemory"
+				text="{'Memory: ' + (System.privateMemory / 1024) + ' KB'}"
+				render="totalMemory.text = 'Memory: ' + (System.privateMemory / 1024) + ' KB'"/>
+			<s:Label id="cpuUsage"
+				text="{'CPU: ' + System.processCPUUsage + ' %'}"
+				render="cpuUsage.text = 'CPU: ' + System.processCPUUsage + ' %'"/>
+		</s:HGroup>
+	</s:controlBarContent>
 	<s:Label id="appNameLabel" includeIn="splash" color="#002040"
 			 fontFamily="Georgia" fontSize="36" fontWeight="bold"
 			 horizontalCenter="0" text="Wardrobe Planner®" textAlign="center"
