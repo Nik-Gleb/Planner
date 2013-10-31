@@ -2,28 +2,32 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
-			   xmlns:products="services.products.*"
-			   xmlns:dets="services.dets.*"
-			   xmlns:templates="services.templates.*"
-			   minWidth="640" minHeight="480"
-			   
-			   currentState="start" pageTitle="Planner"
-			   viewSourceURL="srcview/index.html"
-			   backgroundColor.splash="#606080">
-
+			   xmlns:planner="com.simProject.planner.*"
+			   minWidth="640" minHeight="480" currentState="initial"
+			   pageTitle="Planner">
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
 	<fx:Script>
 		<![CDATA[
 			import com.simProject.planner.logic.architecture.Controller;
 			import com.simProject.planner.logic.events.ControllerEvent;
 			
-			import mx.controls.Alert;
-			import mx.events.FlexEvent;
+			import mx.events.StateChangeEvent;
 			
 			private var controller:Controller = null;
+			private var onControllerChangeState:Function = null;
 			
-			protected var onControllerChangeState:Function = null;
+			protected function systemPanel_currentStateChangeHandler(event:StateChangeEvent):void
+			{
+				if (event.newState == "running")
+					run();
+				else
+					if (event.newState == "stoped")
+						dispose();
+			}
 			
-			protected function mainButtonNotRunning_clickHandler(event:MouseEvent):void
+			public function run():void
 			{
 				// Создаём функции обратных вызовов
 				this.onControllerChangeState = function(event:ControllerEvent):void
@@ -41,7 +45,7 @@
 				controller.dispatchEvent(
 					new ControllerEvent(
 						ControllerEvent.STATE_CHANGED,
-						controller.currentState.getName())); 
+						controller.currentState.getName())); 				
 			}
 			
 			public function dispose():void
@@ -58,175 +62,24 @@
 				controller = null;
 				System.gc();
 				
-				currentState = 'start'
+				currentState = 'initial'				
 			}
 			
-			protected function loading_enterStateHandler(event:FlexEvent):void
-			{				
-				trace(controller.model.dataDomain);
-				trace('currentState=' + currentState)
-				controller.addEventListener(ControllerEvent.ERROR_LOADING, onErrorLoading);
-				controller.addEventListener(ProgressEvent.PROGRESS, onProgressLoading);
-			}
-			
-			protected function loading_exitStateHandler(event:FlexEvent):void
-			{
-				if (controller)
-					if (controller.hasEventListener(ControllerEvent.ERROR_LOADING))
-						controller.removeEventListener(ControllerEvent.ERROR_LOADING, onErrorLoading);
-			}
-			
-			private function onProgressLoading(event:ProgressEvent):void
-			{
-				trace(event.bytesLoaded, event.bytesTotal);
-			}
-			
-			private function onErrorLoading(event:ControllerEvent):void
-			{
-				trace("Ошибка загрузки данных");
-				dispose();
-				/*
-				Alert.show(
-				event.name,
-				"Ошибка загрузки данных",
-				Alert.OK,
-				this,
-				function():void{dispose()},
-				null,
-				Alert.OK)*/
-			}
-
-			/**
-			 * Обработчик клика по splash-скрину.
-			 * Переводит приложение в состояние "setupShelfSize".
-			 */ 
-			public var splashClickHandler:Function = function(event:MouseEvent):void
-			{
-				currentState = "setup";
-			};			
 		]]>
 	</fx:Script>
 	<s:states>
-		<s:State name="start" enterState="{trace('currentState=' + currentState)}"/>
-		<s:State name="loading"
-				 enterState="loading_enterStateHandler(event)"/>
+		<s:State name="initial" enterState="{trace('currentState=' + currentState)}"/>
+		<s:State name="loading" enterState="{trace('currentState=' + currentState)}"/>
 		<s:State name="ready" enterState="{trace('ready' + controller.model.dataDomain)}"/>
-		<s:State name="splash"
-				 enterState="{this.addEventListener(MouseEvent.CLICK,splashClickHandler);}"
-				 exitState="{this.removeEventListener(MouseEvent.CLICK,splashClickHandler);}"/>
-		<s:State name="setup"/>
-		<s:State name="designer" enterState.designer="{PlannerAPI.initialize()}" />
-		<s:State name="report" enterState="{PlannerAPI.onChangeStateToReport()}"/>
 	</s:states>
-
 	<fx:Declarations>
-		<mx:Blur id="ID" blurXFrom="0" blurXTo="2" blurYFrom="0" blurYTo="2" duration="400"/>
+		<!-- Разместить невизуальные элементы (например, службы или объекты значений) -->
 	</fx:Declarations>
 	<s:controlBarContent>
-		<s:HGroup id="mainButton"
-				  verticalAlign="middle">
-			<s:Button
-				label = "Stop"
-				label.start="Start"
-				click.start="mainButtonNotRunning_clickHandler(event)"
-				click="dispose()"/>
-			<s:Label id="totalMemory"
-				text="{'Memory: ' + (System.privateMemory / 1024) + ' KB'}"
-				render="totalMemory.text = 'Memory: ' + (System.privateMemory / 1024) + ' KB'"/>
-			<s:Label id="cpuUsage"
-				text="{'CPU: ' + System.processCPUUsage + ' %'}"
-				render="cpuUsage.text = 'CPU: ' + System.processCPUUsage + ' %'"/>
-		</s:HGroup>
+		<planner:SystemPanel id="systemPanel"
+							 currentState="stoped"
+							 verticalAlign="middle"
+							 currentStateChange="systemPanel_currentStateChangeHandler(event)">
+		</planner:SystemPanel>
 	</s:controlBarContent>
-	<s:Label id="appNameLabel" includeIn="splash" color="#002040"
-			 fontFamily="Georgia" fontSize="36" fontWeight="bold"
-			 horizontalCenter="0" text="Wardrobe Planner®" textAlign="center"
-			 verticalAlign="middle" verticalCenter="0"/>
-	<s:Label id="compNameLabel" includeIn="splash" right="10" color="#004020"
-			 fontFamily="Courier New" fontSize="24" fontWeight="bold"
-			 text="by Sim Project© inc." textAlign="center"
-			 verticalAlign="middle" verticalCenter="219"/>
-	<s:Label includeIn="designer,report,setup" y="10" color="#336699"
-			 fontFamily="Courier New" fontSize="24" horizontalCenter="0"
-			 verticalAlign="middle"
-			 text.setup="Укажите размер списка" textAlign="center"
-			 text.designer="Соберите необходимую конфигурацию"
-			 text.report="Отчёт"/>
-	<s:HSlider includeIn="setup" width="296"
-			   change="{PlannerAPI.onSliderChanged()}"
-			   horizontalCenter="0"
-			   liveDragging="true" maximum="10.0" verticalCenter="0"/>
-	<s:HGroup id="titlePanel1" includeIn="designer,report,setup" right="10" bottom="10"
-			  width="163" height="29" horizontalAlign="center"
-			  verticalAlign="middle">
-		<s:Button id="backButton1" label="Назад"
-				  visible.setup="false"
-				  visible.designer="true"
-				  visible.report="true"
-				  click.designer="{currentState='setup'}"
-				  click.report="{currentState='designer'}"/>
-		<s:Button id="forwardButton1"
-				  label="Вперёд"
-				  label.report="Печать"
-				  visible.setup="true"
-				  visible.designer="true"
-				  visible.report="true"
-				  click.designer="{currentState='report'}"
-				  click.setup="{currentState='designer'}"
-				  click.report="{PlannerAPI.onPrintClick()}"/>
-	</s:HGroup>
-	<s:Group includeIn="designer" width="626" height="252" horizontalCenter="0"
-			 verticalCenter="-60">
-		<s:List id="productsList" x="12" y="4" width="156" height="110"
-				borderVisible="true"
-				change="{PlannerAPI.onProductsListChanged()}"
-				contentBackgroundColor="#FFFFFF"
-				itemRenderer="com.simProject.planner.ProductItemListRenderer"
-				labelField="name" verticalScrollPolicy="auto"
-				x.designer="44" y.designer="89">
-		</s:List>
-		<s:List id="templatesList" x="12" y="124" width="157" height="110"
-				change="{PlannerAPI.onTemplatesListChanged()}"
-				itemRenderer="com.simProject.planner.TemplateItemListRenderer"
-				labelField="name" verticalScrollPolicy="auto"
-				x.designer="44" y.designer="209">
-		</s:List>
-		<s:RichText id="productInfo" x="176" y="4" width="267" height="110"
-					x.designer="208" y.designer="89"/>
-		<s:RichText id="templateInfo" x="176" y="122" width="267" height="112"
-					x.designer="208" y.designer="207"/>
-		<s:List id="resultList" x="451" y="4" width="159" height="230"
-				borderVisible="false" contentBackgroundColor="#E0E0E0"
-				dataProvider="{PlannerAPI.resultProducts}" dragEnabled="true"
-				dragMoveEnabled="true" dropEnabled="true"
-				itemRenderer="com.simProject.planner.ResultItemListRenderer"
-				labelField="id"
-				x.designer="483" y.designer="89">
-		</s:List>
-	</s:Group>
-	<s:BorderContainer id="reportContent" includeIn="report" width="520"
-					   height="408" dropShadowVisible="true"
-					   horizontalCenter="0" verticalCenter="0">
-		<s:layout>
-			<s:VerticalLayout horizontalAlign="contentJustify"/>
-		</s:layout>
-		<s:DataGrid width="515" dataProvider="{PlannerAPI.resultTable}"
-					requestedRowCount="4">
-			<s:columns>
-				<s:ArrayList>
-					<s:GridColumn dataField="id" headerText="id" width="32"/>
-					<s:GridColumn dataField="name" headerText="Название"/>
-					<s:GridColumn dataField="price" headerText="Цена, руб"/>
-					<s:GridColumn dataField="count" headerText="Количество, шт"/>
-					<s:GridColumn dataField="sum" headerText="Сумма, руб"/>
-				</s:ArrayList>
-			</s:columns>
-		</s:DataGrid>
-		<s:HGroup width="512" height="15" horizontalAlign="right"
-				  verticalAlign="middle">
-			<s:Label id="reportTotal" width="102" height="15"/>
-		</s:HGroup>
-		<s:SWFLoader id="screenShot" creationCompleteEffect="{ID}"/>
-	</s:BorderContainer>
 </s:Application>
-

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  currentState="stoped" horizontalAlign="center" verticalAlign="middle">
+		
+	<s:states>
+		<s:State name="running"/>
+		<s:State name="stoped"/>
+	</s:states>
+	<fx:Declarations>
+		<!-- Разместить невизуальные элементы (например, службы или объекты значений) -->
+	</fx:Declarations>
+	<s:Button id="runButton" label.stoped="Start" label.running="Stop"
+			  click.stoped="{currentState = 'running'}"
+			  icon.stoped="assets/start.png"
+				click.running="{currentState = 'stoped'}"
+				icon.running="assets/stop.png"/>
+
+	<s:Label id="totalMemory"
+			 text="{'Memory: ' + (System.privateMemory / 1024) + ' KB'}"
+			 render="totalMemory.text = 'Memory: ' + (System.privateMemory / 1024) + ' KB'"/>
+	<s:Label id="cpuUsage"
+			 text="{'CPU: ' + System.processCPUUsage + ' %'}"
+			 render="cpuUsage.text = 'CPU: ' + System.processCPUUsage + ' %'"/>
+</s:HGroup>
