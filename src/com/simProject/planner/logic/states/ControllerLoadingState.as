@@ -174,8 +174,8 @@ package com.simProject.planner.logic.states
 				_images[i].contentLoaderInfo.addEventListener(Event.COMPLETE, onImageLoadingComplete);
 				_images[i].contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onImageLoadingError);
 				_images[i].contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onImageLoadingProgress);
-				//_images[i].load(Services.getNoCachedURL(url));
-				_images[i].load(Services.getNoCachedURL("http://upload.wikimedia.org/wikipedia/ru/8/83/Thunderbird_logo.png"));
+				_images[i].load(Services.getNoCachedURL(url));
+				//_images[i].load(Services.getNoCachedURL("http://upload.wikimedia.org/wikipedia/ru/8/83/Thunderbird_logo.png"));
 			}
 			
 		}

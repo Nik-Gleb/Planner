@@ -3,8 +3,9 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:planner="com.simProject.planner.*"
-			   minWidth="640" minHeight="480" currentState="initial"
-			   pageTitle="Planner">
+			   xmlns:views="com.simProject.planner.views.*"
+			   currentState="initial" pageTitle="Planner"
+			   width="864" height="520">
 	<s:layout>
 		<s:BasicLayout/>
 	</s:layout>
@@ -13,9 +14,10 @@
 			import com.simProject.planner.logic.architecture.Controller;
 			import com.simProject.planner.logic.events.ControllerEvent;
 			
+			import mx.events.FlexEvent;
 			import mx.events.StateChangeEvent;
 			
-			private var controller:Controller = null;
+			private var _controller:Controller = null;
 			private var onControllerChangeState:Function = null;
 			
 			protected function systemPanel_currentStateChangeHandler(event:StateChangeEvent):void
@@ -37,42 +39,61 @@
 				};
 				
 				// Создаём контроллёр
-				controller = new Controller();
+				_controller = new Controller();
 				
 				// Связываем функции обратных вызово и события модели
-				controller.addEventListener(ControllerEvent.STATE_CHANGED, onControllerChangeState);	
+				_controller.addEventListener(ControllerEvent.STATE_CHANGED, onControllerChangeState);	
 				
-				controller.dispatchEvent(
+				_controller.dispatchEvent(
 					new ControllerEvent(
 						ControllerEvent.STATE_CHANGED,
-						controller.currentState.getName())); 				
+						_controller.currentState.getName())); 				
 			}
 			
 			public function dispose():void
 			{
-				if (controller == null) return;
+				if (_controller == null) return;
 				
 				// Отвязываем представление от модели
-				controller.removeEventListener(ControllerEvent.STATE_CHANGED, onControllerChangeState);
+				_controller.removeEventListener(ControllerEvent.STATE_CHANGED, onControllerChangeState);
 				
 				// Уничтожаем функции обратных вызовов
 				onControllerChangeState = null;
 				
-				controller.dispose();
-				controller = null;
+				_controller.dispose();
+				_controller = null;
 				System.gc();
 				
 				currentState = 'initial'				
+			}
+			
+			public function get controller():Controller
+			{
+				return this._controller;
+			}
+			
+			protected function loadingState_enterStateHandler(event:FlexEvent):void
+			{
+				loadContent.progressBar.source = controller;
+			}
+			
+			protected function exitState_exitStateHandler(event:FlexEvent):void
+			{
+				loadContent.progressBar.source = null;
 			}
 			
 		]]>
 	</fx:Script>
 	<s:states>
 		<s:State name="initial" enterState="{trace('currentState=' + currentState)}"/>
-		<s:State name="loading" enterState="{trace('currentState=' + currentState)}"/>
-		<s:State name="ready" enterState="{trace('ready' + controller.model.dataDomain)}"/>
+		<s:State name="loading"
+				 enterState="loadingState_enterStateHandler(event)"
+				 exitState="exitState_exitStateHandler(event)"/>
+		<s:State name="ready" enterState="{trace('currentState=' + currentState)}"/>
 	</s:states>
+
 	<fx:Declarations>
+		
 		<!-- Разместить невизуальные элементы (например, службы или объекты значений) -->
 	</fx:Declarations>
 	<s:controlBarContent>
@@ -82,4 +103,11 @@
 							 currentStateChange="systemPanel_currentStateChangeHandler(event)">
 		</planner:SystemPanel>
 	</s:controlBarContent>
+	<views:DesignContent 
+		id="desCont"
+		includeIn="ready" width="100%" height="100%"
+						 horizontalCenter="0" verticalCenter="0">
+	</views:DesignContent>
+	<views:LoadContent id="loadContent" includeIn="loading" x="0" y="0">
+	</views:LoadContent>
 </s:Application>

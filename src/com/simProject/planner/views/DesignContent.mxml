@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+					  xmlns:s="library://ns.adobe.com/flex/spark"
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					  xmlns:views="com.simProject.planner.views.*"
+					  width="864" height="480" backgroundAlpha="0.5"
+					  backgroundColor="336699"
+					  >
+
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+	
+	
+	<fx:Declarations>
+		
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<mx:TabNavigator id="tabNavigator" y="10" right="10" width="220" height="460"
+					 backgroundAlpha="0.5">
+		<s:NavigatorContent width="100%" height="100%" label="Полки"
+							icon="@Embed('assets/goods.png')">
+			<views:Shelfs left="0" right="0" top="0" bottom="0"
+						  contentBackgroundAlpha="0.5"/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="Сборки"
+							icon="@Embed('assets/templates.png')">
+			<views:Assemblies left="0" right="0" top="0" bottom="0"
+							  contentBackgroundAlpha="0.5"/>
+		</s:NavigatorContent>
+	</mx:TabNavigator>
+	<s:BorderContainer x="10" y="10" width="618" height="460"
+					   backgroundAlpha="0.5">
+	</s:BorderContainer>
+	
+				
+</s:SkinnableContainer>

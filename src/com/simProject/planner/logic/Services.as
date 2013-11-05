@@ -1,10 +1,14 @@
 package com.simProject.planner.logic
 {
 
+	import com.simProject.planner.logic.architecture.dataDomain.Commodity;
+	
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
+	
+	import mx.collections.IList;
 
 	/**
 	 * Внутренние службы. 
@@ -74,6 +78,7 @@ package com.simProject.planner.logic
 		{
 			return new URLRequest(url + "?nocache=" + Math.random());
 		}
+		
 		
 	}
 }
