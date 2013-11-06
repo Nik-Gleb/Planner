@@ -4,16 +4,81 @@
 		xmlns:mx="library://ns.adobe.com/flex/mx"
 		borderVisible="false" contentBackgroundAlpha="0.5"
 		dataProvider="{new ShelfsDataProvider((FlexGlobals.topLevelApplication as Planner).controller.model.dataDomain.goods)}"
-		itemRenderer="{new ClassFactory(ShelfItemRenderer)}">
+		itemRenderer="{new ClassFactory(ShelfItemRenderer)}"
+		mouseDown="list_mouseDownHandler(event)">
 	<fx:Script>
 		<![CDATA[
 			import com.simProject.planner.Planner;
+			import com.simProject.planner.logic.architecture.Controller;
+			import com.simProject.planner.logic.architecture.dataDomain.Commodity;
 			
 			import mx.core.FlexGlobals;
 			
+			import spark.components.Image;
 			import spark.events.ListEvent;
+						
+			private function list_mouseDownHandler(event:MouseEvent):void
+			{
+				event.stopImmediatePropagation();
+				var item:ShelfItemRenderer = event.target as ShelfItemRenderer;
+				if(item){
+					var controller:Controller = (FlexGlobals.topLevelApplication as Planner).controller as Controller;
+										
+					controller.onShelfItemPressed(
+						(item.data as Commodity).id,
+						new Point(item.mouseX, item.mouseY),
+						item.localToGlobal(new Point(item.mouseX, item.mouseY)));
+					
+					//stage.addEventListener(MouseEvent.MOUSE_MOVE,stage_mouseMoveHandler);
+					//stage.addEventListener(MouseEvent.MOUSE_UP,stage_mouseUpHandler);
+				}
+				
+			}
 			
+			private function stage_mouseMoveHandler(event:MouseEvent):void
+			{
+				event.stopImmediatePropagation();
+				
+				var controller:Controller = (FlexGlobals.topLevelApplication as Planner).controller as Controller;
+				controller.onShelfItemMoved(new Point(event.stageX, event.stageY));
+			}
 			
+			private function stage_mouseUpHandler(event:MouseEvent):void
+			{
+				event.stopImmediatePropagation();
+				
+				var controller:Controller = (FlexGlobals.topLevelApplication as Planner).controller as Controller;
+				controller.onShelfItemUp();
+			}
+
+			private function beginDrag(pos:Point):void
+			{
+				/*stage.removeEventListener(MouseEvent.MOUSE_MOVE,stage_mouseMoveHandler);
+				stage.removeEventListener(MouseEvent.MOUSE_UP,stage_mouseUpHandler);
+				
+				stage.addEventListener(MouseEvent.MOUSE_MOVE,handleDrag);
+				stage.addEventListener(MouseEvent.MOUSE_UP,endDrag);
+*/
+				/*var dragObject:Image = new Image();
+				dragObject.includeInLayout = false;
+				dragObject.source = ((data as ShelfsDataProvider).getItemAt(dragID) as Commodity).image;
+				dragObject.x = pos.x - dragOffset.x;
+				dragObject.y = pos.y - dragOffset.y;
+				
+				stage.addChild(dragObject);*/
+			}
+			private function endDrag(event:MouseEvent):void
+			{
+				/*stage.removeEventListener(MouseEvent.MOUSE_MOVE,handleDrag);
+				stage.removeEventListener(MouseEvent.MOUSE_UP,endDrag);
+				*/
+			}
+			private function handleDrag(event:MouseEvent):void
+			{
+				/*
+				event.updateAfterEvent();
+				trace(event.stageX, event.stageY);*/
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>

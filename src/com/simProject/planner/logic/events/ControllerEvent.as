@@ -11,7 +11,10 @@ package com.simProject.planner.logic.events
 		/** Тип события "Изменилось состояние контроллера". **/
 		public static const STATE_CHANGED:String = "state_changed";
 		/** Тип события "Произошла ошибка при загрузке данных". */
-		public static const ERROR_LOADING:String = "error_loading";		
+		public static const ERROR_LOADING:String = "error_loading";
+		/** Перемещение элемента списка полок. */
+		public static const SHELF_ITEM_DRAG:String = "shelf_item_drag";
+
 
 		/** Имя события. */
 		private var _name:String = null;

@@ -1,11 +1,12 @@
 package com.simProject.planner.logic.architecture
 {
+	
 
 	/**
 	 * Контекст контроллера для состояний.
 	 * @author Глеб
 	 */
-	public interface IControllerContext
+	public interface IControllerContext extends IControllerState
 	{
 		/** @return модель */
 		function get model():Model;
@@ -16,8 +17,5 @@ package com.simProject.planner.logic.architecture
 		 */
 		function set currentState(value:IControllerState):void;
 		
-		/** Уничтожение. */
-		function dispose():void;
-
 	}
 }

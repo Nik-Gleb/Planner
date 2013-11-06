@@ -3,7 +3,9 @@ package com.simProject.planner.logic.architecture
 	
 	import com.simProject.planner.logic.events.ControllerEvent;
 	
+	import flash.display.Stage;
 	import flash.events.EventDispatcher;
+	import flash.geom.Point;
 
 	/**
 	 * Контекст контроллера для состояний 
@@ -39,6 +41,14 @@ package com.simProject.planner.logic.architecture
 			}
 		}
 		
+		public function getName():String
+		{
+			if (_currentState)
+				return _currentState.getName();
+			else
+				return null;
+		}
+		
 		public function dispose():void
 		{
 			_model.dispose();
@@ -46,6 +56,37 @@ package com.simProject.planner.logic.architecture
 			_currentState.dispose();
 			_currentState = null;
 		}
+		
+		public function onShelfItemPressed(id:uint, itemPos:Point, stagePos:Point):void
+		{
+			if (_currentState)
+				_currentState.onShelfItemPressed(id, itemPos, stagePos);
+		}
+		
+		public function onShelfItemMoved(stagePos:Point):void
+		{
+			if (_currentState)
+				_currentState.onShelfItemMoved(stagePos);
+			
+		}
+		
+		public function onShelfItemUp():void
+		{
+			if (_currentState)
+				_currentState.onShelfItemUp();
+			
+		}
 
+		public function onShelfItemDrag(stagePos:Point):void
+		{
+			if (_currentState)
+				_currentState.onShelfItemDrag(stagePos);
+		}
+		
+		public function onShelfItemStopDrag(stagePos:Point):void
+		{
+			if (_currentState)
+				_currentState.onShelfItemStopDrag(stagePos);
+		}
 	}
 }

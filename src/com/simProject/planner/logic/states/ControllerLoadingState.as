@@ -263,10 +263,6 @@ package com.simProject.planner.logic.states
 		 */
 		private function commonError(message:String):void
 		{
-			(context as EventDispatcher).dispatchEvent(new ControllerEvent(
-				ControllerEvent.ERROR_LOADING,
-				message
-			));
 
 		}
 		

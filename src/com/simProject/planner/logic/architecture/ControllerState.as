@@ -1,5 +1,8 @@
 package com.simProject.planner.logic.architecture
 {
+	import flash.display.Stage;
+	import flash.geom.Point;
+
 	/**
 	 * Абстрактное состояние контроллера. 
 	 * @author Глеб
@@ -35,5 +38,31 @@ package com.simProject.planner.logic.architecture
 		{
 			_context = null;
 		}
+		
+		public function onShelfItemPressed(id:uint, itemPos:Point, stagePos:Point):void
+		{
+			
+		}
+		
+		public function onShelfItemMoved(stagePos:Point):void
+		{
+			
+		}
+		
+		public function onShelfItemUp():void
+		{
+			
+		}
+		
+		public function onShelfItemDrag(stagePos:Point):void
+		{
+			
+		}
+		
+		public function onShelfItemStopDrag(stagePos:Point):void
+		{
+			
+		}
+
 	}
 }

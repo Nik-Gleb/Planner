@@ -3,6 +3,9 @@ package com.simProject.planner.logic.states
 	import com.simProject.planner.logic.Services;
 	import com.simProject.planner.logic.architecture.ControllerState;
 	import com.simProject.planner.logic.architecture.IControllerContext;
+	
+	import flash.display.Stage;
+	import flash.geom.Point;
 
 	/**
 	 * Состояние приложение готово к работе. 
@@ -24,5 +27,11 @@ package com.simProject.planner.logic.states
 		{
 			super.dispose();
 		}
+		
+		public override function onShelfItemPressed(id:uint, itemPos:Point, stagePos:Point):void
+		{
+			context.currentState = new ControllerShelfItemPressedState(context, id, itemPos, stagePos);
+		}
+		
 	}
 }

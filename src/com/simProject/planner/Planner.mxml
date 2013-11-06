@@ -11,14 +11,27 @@
 	</s:layout>
 	<fx:Script>
 		<![CDATA[
+			import com.simProject.planner.logic.Services;
 			import com.simProject.planner.logic.architecture.Controller;
 			import com.simProject.planner.logic.events.ControllerEvent;
+			import com.simProject.planner.logic.states.ControllerShelfItemDraggingState;
 			
+			import mx.core.FlexGlobals;
+			import mx.events.EffectEvent;
 			import mx.events.FlexEvent;
 			import mx.events.StateChangeEvent;
+			import mx.graphics.BitmapScaleMode;
+			
+			import spark.components.Image;
+			import spark.filters.BlurFilter;
+			import spark.filters.DropShadowFilter;
+			import spark.filters.GlowFilter;
 			
 			private var _controller:Controller = null;
 			private var onControllerChangeState:Function = null;
+			public var _dragProxy:Image = null;
+			private var glowFilter:GlowFilter = null;
+			private var dragEnabled:Boolean = false;
 			
 			protected function systemPanel_currentStateChangeHandler(event:StateChangeEvent):void
 			{
@@ -80,6 +93,105 @@
 			protected function exitState_exitStateHandler(event:FlexEvent):void
 			{
 				loadContent.progressBar.source = null;
+			}			
+				
+			protected function shelf_item_pressed_mouseMoveHandler(event:MouseEvent):void
+			{
+				controller.onShelfItemMoved(new Point(event.stageX, event.stageY));
+			}
+			
+			protected function shelf_item_pressed_mouseUpHandler(event:MouseEvent):void
+			{
+				controller.onShelfItemUp();
+			}
+			
+			protected function shelf_item_dragging_mouseMoveHandler(event:MouseEvent):void
+			{
+				controller.onShelfItemDrag(new Point(event.stageX, event.stageY));
+				event.updateAfterEvent();
+			}
+			
+			protected function shelf_item_dragging_mouseUpHandler(event:MouseEvent):void
+			{
+				controller.onShelfItemStopDrag(new Point(event.stageX, event.stageY));
+			}
+			
+			protected function shelf_item_dragging_state_enterStateHandler(event:FlexEvent):void
+			{
+				var pos:Point = desCont.borderContainer.localToGlobal(new Point(0,0));
+				controller.model.workSpaceRect = new Rectangle(pos.x, pos.y, desCont.borderContainer.width, desCont.borderContainer.height);
+				
+				stage.addEventListener(MouseEvent.MOUSE_MOVE,shelf_item_dragging_mouseMoveHandler);
+				stage.addEventListener(MouseEvent.MOUSE_UP,shelf_item_dragging_mouseUpHandler);
+				
+				glowFilter = new GlowFilter();
+				glowFilter.color = controller.model.newShelfDrag.enabled ? 0x00FF00 : 0xFF0000;
+				var id:uint = controller.model.newShelfDrag.id;
+				_dragProxy = new Image();
+				_dragProxy.alpha = 0;
+				_dragProxy.smooth = true;
+				_dragProxy.scaleX = 0.1;
+				_dragProxy.scaleY = 0.1;
+				_dragProxy.includeInLayout = false;
+				_dragProxy.source = controller.model.dataDomain.goods[id].image;
+				var pos:Point = globalToLocal(controller.model.newShelfDrag.viewPos);
+				_dragProxy.x = pos.x;
+				_dragProxy.y = pos.y-systemPanel.height-16;
+				_dragProxy.width = controller.model.dataDomain.goods[id].width / 1000 * Services.REAL_SCALE;
+				_dragProxy.height = controller.model.dataDomain.goods[id].height / 1000 * Services.REAL_SCALE;
+				_dragProxy.scaleMode = BitmapScaleMode.STRETCH;
+				_dragProxy.filters = [glowFilter, new DropShadowFilter()];
+				(FlexGlobals.topLevelApplication as Planner).addElement(_dragProxy);
+				controller.addEventListener(ControllerEvent.SHELF_ITEM_DRAG,onShelfItemDraggingPosChanged);
+				showDragEffect.target = _dragProxy;
+				hideDragEffect.target = _dragProxy;
+
+				showDragEffect.play();
+			}
+			
+			protected function shelf_item_dragging_state_exitStateHandler(event:FlexEvent):void
+			{
+				stage.removeEventListener(MouseEvent.MOUSE_MOVE,shelf_item_dragging_mouseMoveHandler);
+				stage.removeEventListener(MouseEvent.MOUSE_UP,shelf_item_dragging_mouseUpHandler);
+				
+				controller.removeEventListener(ControllerEvent.SHELF_ITEM_DRAG,onShelfItemDraggingPosChanged);
+
+				hideDragEffect.play();
+				
+			}
+			
+			private function onShelfItemDraggingPosChanged(event:ControllerEvent):void
+			{
+				_dragProxy.x = controller.model.newShelfDrag.viewPos.x;
+				_dragProxy.y = controller.model.newShelfDrag.viewPos.y-systemPanel.height-16;
+				dragEnabled = controller.model.newShelfDrag.enabled;
+				glowFilter.color = controller.model.newShelfDrag.enabled ? 0x00FF00 : 0xFF0000;
+				
+				
+			}
+			
+			protected function shelf_item_pressed_state_enterStateHandler(event:FlexEvent):void
+			{
+				stage.addEventListener(MouseEvent.MOUSE_MOVE,shelf_item_pressed_mouseMoveHandler);
+				stage.addEventListener(MouseEvent.MOUSE_UP,shelf_item_pressed_mouseUpHandler);
+			}
+			
+			protected function shelf_item_pressed_state_exitStateHandler(event:FlexEvent):void
+			{
+				stage.removeEventListener(MouseEvent.MOUSE_MOVE,shelf_item_pressed_mouseMoveHandler);
+				stage.removeEventListener(MouseEvent.MOUSE_UP,shelf_item_pressed_mouseUpHandler);
+			}
+			
+			protected function hideDragEffect_effectEndHandler(event:EffectEvent):void
+			{
+				removeElement(_dragProxy);
+				if (!dragEnabled) return;
+				var pos:Point = desCont.borderContainer.globalToLocal(new Point(_dragProxy.x,_dragProxy.y+systemPanel.height+16));
+				_dragProxy.x = pos.x;
+				_dragProxy.y = pos.y;
+				_dragProxy.filters = null;
+				desCont.borderContainer.addElement(_dragProxy);
+				showDragEffect.play();
 			}
 			
 		]]>
@@ -90,13 +202,29 @@
 				 enterState="loadingState_enterStateHandler(event)"
 				 exitState="exitState_exitStateHandler(event)"/>
 		<s:State name="ready" enterState="{trace('currentState=' + currentState)}"/>
+		<s:State name="shelf_item_pressed"
+				 enterState="shelf_item_pressed_state_enterStateHandler(event)"
+				 exitState="shelf_item_pressed_state_exitStateHandler(event)"/>
+		<s:State name="shelf_item_dragging"
+				 enterState="shelf_item_dragging_state_enterStateHandler(event)"
+				 exitState="shelf_item_dragging_state_exitStateHandler(event)"/>
 	</s:states>
 
 	<fx:Declarations>
 		
+		<s:Parallel id="showDragEffect" duration="200">
+			<s:Fade alphaFrom="0" alphaTo="1" />
+			<s:Scale autoCenterTransform="true" scaleXTo="1" scaleYTo="1"/> 
+		</s:Parallel>	
+
+		<s:Parallel id="hideDragEffect" effectEnd="hideDragEffect_effectEndHandler(event)" duration="400">
+			<s:Fade alphaFrom="1" alphaTo="0" />
+			<s:Scale autoCenterTransform="true" scaleXTo="0.1" scaleYTo="0.1"/> 
+		</s:Parallel>	
+		
 		<!-- Разместить невизуальные элементы (например, службы или объекты значений) -->
 	</fx:Declarations>
-	<s:controlBarContent>
+	<s:controlBarContent >
 		<planner:SystemPanel id="systemPanel"
 							 currentState="stoped"
 							 verticalAlign="middle"
@@ -104,8 +232,8 @@
 		</planner:SystemPanel>
 	</s:controlBarContent>
 	<views:DesignContent 
-		id="desCont"
-		includeIn="ready" width="100%" height="100%"
+		id="desCont" 
+		includeIn="ready, shelf_item_dragging, shelf_item_pressed" width="100%" height="100%"
 						 horizontalCenter="0" verticalCenter="0">
 	</views:DesignContent>
 	<views:LoadContent id="loadContent" includeIn="loading" x="0" y="0">

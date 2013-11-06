@@ -41,6 +41,8 @@ package com.simProject.planner.views
 		public function ShelfItemRenderer()
 		{
 			super();
+			mouseChildren = false;
+			cacheAsBitmap = true;
 		}
 
 		/** Данные компонента. */

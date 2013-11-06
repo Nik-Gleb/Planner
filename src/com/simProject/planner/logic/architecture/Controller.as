@@ -4,21 +4,28 @@ package com.simProject.planner.logic.architecture
 
 	/**
 	 * Событие "Изменилось состояние контроллера".
-	 * @eventType com.gleb.customComponents.logic.events.ControllerEvent.STATE_CHANGED
+	 * @eventType com.simProject.planner.logic.events.ControllerEvent.STATE_CHANGED
 	 */
-	[Event(name="state_changed", type="com.gleb.customComponents.logic.events.ControllerEvent")]
+	[Event(name="state_changed", type="com.simProject.planner.logic.events.ControllerEvent")]
 	
 	/**
 	 * Событие "Произошла ошибка при загрузке данных"
-	 * @eventType com.gleb.customComponents.logic.events.ControllerEvent.ERROR_LOADING
+	 * @eventType com.simProject.planner.logic.events.ControllerEvent.ERROR_LOADING
 	 */
-	[Event(name="error_loading", type="com.gleb.customComponents.logic.events.ControllerEvent")]
+	[Event(name="error_loading", type="com.simProject.planner.logic.events.ControllerEvent")]
 	
 	/**
 	 * Событие "Прогресс загрузки"
 	 * @eventType flash.events.ProgressEvent.PROGRESS
 	 */
 	[Event(name="progress", type="flash.events.ProgressEvent")]
+	
+	/**
+	 * Событие "Изменилось состояние перетаскиваемого объекта"
+	 * @eventType com.simProject.planner.logic.events.ControllerEvent.SHELF_ITEM_DRAG
+	 */
+	[Event(name="shelf_item_drag", type="com.simProject.planner.logic.events.ControllerEvent")]
+
 
 	
 	/**
@@ -46,6 +53,8 @@ package com.simProject.planner.logic.architecture
 		{	
 			super.dispose();
 		}
+		
+
 
 		
 	}
